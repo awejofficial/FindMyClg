@@ -1,59 +1,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Blue Aesthetic Design System - Base Styles */
+/* NVIDIA Design System - Base Styles */
 
 @layer base {
-  :root {
-    /* Blue Aesthetic Color Palette */
-    --background: 248 250 252; /* Very light blue-gray */
-    --foreground: 15 23 42; /* Dark blue-gray */
-    --card: 255 255 255; /* Pure white cards */
-    --card-foreground: 15 23 42; /* Dark blue-gray text */
-    --popover: 255 255 255; /* Pure white */
-    --popover-foreground: 15 23 42; /* Dark blue-gray */
-    --primary: 59 130 246; /* Beautiful blue */
-    --primary-foreground: 255 255 255; /* White text on blue */
-    --secondary: 241 245 249; /* Light blue-gray */
-    --secondary-foreground: 51 65 85; /* Medium blue-gray */
-    --muted: 241 245 249; /* Light blue-gray for subtle backgrounds */
-    --muted-foreground: 100 116 139; /* Gray-blue for secondary text */
-    --accent: 219 234 254; /* Light blue accent */
-    --accent-foreground: 30 58 138; /* Dark blue */
-    --destructive: 239 68 68; /* Blue-tinted red for errors */
-    --destructive-foreground: 255 255 255;
-    --border: 226 232 240; /* Light blue-gray borders */
-    --input: 255 255 255; /* Pure white input backgrounds */
-    --ring: 59 130 246; /* Blue for focus rings */
-    --radius: 0.5rem; /* Rounded corners */
-    
-    /* Blue gradient variables */
-    --blue-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    --blue-light-gradient: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  }
-
-  .dark {
-    --background: 15 23 42; /* Dark blue-gray */
-    --foreground: 248 250 252; /* Light text */
-    --card: 30 41 59; /* Dark blue card */
-    --card-foreground: 248 250 252; /* Light text on cards */
-    --popover: 30 41 59; /* Dark blue */
-    --popover-foreground: 248 250 252; /* Light text */
-    --primary: 59 130 246; /* Blue primary */
-    --primary-foreground: 255 255 255; /* White text */
-    --secondary: 51 65 85; /* Medium blue-gray */
-    --secondary-foreground: 241 245 249; /* Light text */
-    --muted: 51 65 85; /* Medium blue-gray */
-    --muted-foreground: 148 163 184; /* Light gray-blue */
-    --accent: 30 58 138; /* Dark blue accent */
-    --accent-foreground: 219 234 254; /* Light blue text */
-    --destructive: 239 68 68; /* Red for errors */
-    --destructive-foreground: 255 255 255;
-    --border: 51 65 85; /* Medium blue-gray borders */
-    --input: 30 41 59; /* Dark input backgrounds */
-    --ring: 59 130 246; /* Blue focus rings */
-  }
-
   * {
     @apply border-border;
   }
@@ -84,16 +34,17 @@
     @apply text-2xl lg:text-3xl;
   }
 
-  /* Blue-themed form elements */
+  /* NVIDIA-themed form elements */
   input, textarea, select {
     @apply bg-input border-border text-foreground;
+    transition: all 0.2s ease;
   }
 
   input:focus, textarea:focus, select:focus {
-    @apply bg-input border-primary ring-primary;
+    @apply bg-input border-primary ring-2 ring-primary/20;
   }
 
-  /* Override browser defaults with blue theme */
+  /* Override browser defaults with NVIDIA theme */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -103,7 +54,7 @@
   }
 }
 
-/* Blue scrollbar */
+/* NVIDIA Green scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }

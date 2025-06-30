@@ -1,8 +1,8 @@
 
-/* Blue Utility Classes */
+/* NVIDIA Utility Classes */
 
 @layer utilities {
-  /* Blue utilities */
+  /* NVIDIA brand utilities */
   .text-nvidia-green {
     color: hsl(var(--primary));
   }
@@ -11,66 +11,51 @@
     background-color: hsl(var(--primary));
   }
 
-  /* Container */
-  .container-minimal {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
+  /* Container utilities */
   .container-nvidia {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Grid layouts with blue theme */
-  .grid-nvidia-4 {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+  /* Grid layouts */
+  .grid-nvidia {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
 
-  /* Blue transitions */
-  .transition-minimal {
-    transition: all 0.2s ease;
-  }
-
+  /* NVIDIA transitions */
   .transition-nvidia {
     transition: all 0.2s ease;
   }
 
-  /* Blue focus styles */
-  .focus-minimal {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-  }
-
+  /* NVIDIA focus styles */
   .focus-nvidia {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary;
   }
 
-  /* Blue gradient backgrounds */
-  .bg-blue-gradient {
-    background: var(--blue-gradient);
-  }
-
-  .bg-blue-light-gradient {
-    background: var(--blue-light-gradient);
-  }
-
-  /* Remove all yellow/green colors and replace with blue-based error colors */
+  /* Remove all non-NVIDIA colors */
   .text-yellow-600,
   .text-yellow-500,
   .text-amber-600,
   .text-amber-500,
   .text-green-600,
-  .text-green-500 {
-    color: hsl(var(--destructive)) !important;
+  .text-green-500,
+  .text-blue-600,
+  .text-blue-500 {
+    color: hsl(var(--primary)) !important;
   }
 
   .bg-yellow-50,
   .bg-amber-50,
-  .bg-green-50 {
-    background-color: hsl(var(--destructive) / 0.1) !important;
+  .bg-green-50,
+  .bg-blue-50 {
+    background-color: hsl(var(--accent)) !important;
   }
 
-  .border-yellow-200,
-  .border-amber-200,
-  .border-green-200 {
-    border-color: hsl(var(--destructive) / 0.3) !important;
+  /* Ensure clean, minimal design */
+  .shadow-none {
+    box-shadow: none !important;
+  }
+
+  .gradient-none {
+    background: hsl(var(--background)) !important;
   }
 }

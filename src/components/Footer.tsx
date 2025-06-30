@@ -12,11 +12,13 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col items-center lg:items-start space-y-2">
             <p className="text-lg font-medium text-card-foreground flex items-center gap-2">
               Made with 
-              <Heart className="h-4 w-4 text-destructive fill-current" />
+              <Heart className="h-4 w-4 text-primary fill-current" />
               by 
               <span className="font-bold text-primary">Awej</span>
             </p>
-            
+            <p className="text-sm text-muted-foreground">
+              © 2025 FindMyClg. All rights reserved.
+            </p>
           </div>
 
           {/* Center section - Navigation links */}
@@ -67,9 +69,6 @@ export const Footer: React.FC = () => {
               aria-label="Connect on LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
-              <p className="text-sm text-muted-foreground">
-              © 2025 FindMyClg. All rights reserved.
-            </p>
             </a>
           </div>
         </div>

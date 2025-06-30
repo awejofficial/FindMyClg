@@ -8,3 +8,53 @@
 @import './styles/components.css';
 @import './styles/utilities.css';
 @import './styles/animations.css';
+
+/* Global overrides for NVIDIA theme */
+@layer base {
+  :root {
+    /* NVIDIA Light Theme */
+    --background: 245 245 245; /* #F5F5F5 */
+    --foreground: 26 26 26; /* #1A1A1A */
+    --card: 255 255 255; /* #FFFFFF */
+    --card-foreground: 26 26 26; /* #1A1A1A */
+    --popover: 255 255 255; /* #FFFFFF */
+    --popover-foreground: 26 26 26; /* #1A1A1A */
+    --primary: 118 185 0; /* #76B900 NVIDIA Green */
+    --primary-foreground: 255 255 255; /* #FFFFFF */
+    --secondary: 238 238 238; /* #EEEEEE */
+    --secondary-foreground: 26 26 26; /* #1A1A1A */
+    --muted: 238 238 238; /* #EEEEEE */
+    --muted-foreground: 85 85 85; /* #555555 */
+    --accent: 238 238 238; /* #EEEEEE */
+    --accent-foreground: 26 26 26; /* #1A1A1A */
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 221 221 221; /* #DDDDDD */
+    --input: 255 255 255; /* #FFFFFF */
+    --ring: 118 185 0; /* #76B900 */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* NVIDIA Dark Theme */
+    --background: 18 18 18; /* #121212 */
+    --foreground: 255 255 255; /* #FFFFFF */
+    --card: 30 30 30; /* #1E1E1E */
+    --card-foreground: 255 255 255; /* #FFFFFF */
+    --popover: 30 30 30; /* #1E1E1E */
+    --popover-foreground: 255 255 255; /* #FFFFFF */
+    --primary: 118 185 0; /* #76B900 NVIDIA Green */
+    --primary-foreground: 255 255 255; /* #FFFFFF */
+    --secondary: 46 46 46; /* #2E2E2E */
+    --secondary-foreground: 255 255 255; /* #FFFFFF */
+    --muted: 46 46 46; /* #2E2E2E */
+    --muted-foreground: 204 204 204; /* #CCCCCC */
+    --accent: 46 46 46; /* #2E2E2E */
+    --accent-foreground: 255 255 255; /* #FFFFFF */
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 42 42 42; /* #2A2A2A */
+    --input: 30 30 30; /* #1E1E1E */
+    --ring: 118 185 0; /* #76B900 */
+  }
+}
