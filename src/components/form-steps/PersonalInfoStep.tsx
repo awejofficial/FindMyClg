@@ -24,13 +24,13 @@ export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <div className="grid gap-2">
-            <Label htmlFor="name" className="text-card-foreground font-medium">Full Name</Label>
+            <Label htmlFor="name" className="text-card-foreground">Full Name</Label>
             <Input
               id="name"
               placeholder="Enter your full name"
               value={fullName}
               onChange={(e) => onFullNameChange(e.target.value)}
-              className="bg-input border-border text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="bg-input border-border text-foreground focus:border-primary focus:ring-primary"
             />
           </div>
         </div>

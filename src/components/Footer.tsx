@@ -12,7 +12,7 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col items-center lg:items-start space-y-2">
             <p className="text-lg font-medium text-card-foreground flex items-center gap-2">
               Made with 
-              <Heart className="h-4 w-4 text-primary fill-current" />
+              <Heart className="h-4 w-4 text-destructive fill-current" />
               by 
               <span className="font-bold text-primary">Awej</span>
             </p>

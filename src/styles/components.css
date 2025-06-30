@@ -1,55 +1,63 @@
 
-/* NVIDIA Component Styles - Clean and Minimal */
+/* Blue Component Styles */
 
-@layer components {
-  /* NVIDIA card styles */
-  .nvidia-card {
-    @apply bg-card border border-border rounded-lg p-6 shadow-sm text-card-foreground transition-all duration-200;
+@layer utilities {
+  /* Blue card styles */
+  .minimal-card {
+    @apply bg-card border border-border rounded-lg p-6 shadow-sm text-card-foreground;
+    transition: all 0.2s ease;
   }
 
-  .nvidia-card:hover {
-    @apply shadow-md;
+  .minimal-card:hover {
+    @apply border-primary/30 shadow-md;
   }
 
-  /* NVIDIA button styles */
+  /* Blue button styles */
   .btn-nvidia {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-200;
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 shadow-sm hover:shadow-md;
+    transition: all 0.2s ease;
   }
 
-  /* NVIDIA secondary button */
-  .btn-nvidia-secondary {
-    @apply bg-card border border-border text-card-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent transition-all duration-200;
+  /* Blue secondary button */
+  .btn-minimal {
+    @apply bg-card border border-border text-card-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent hover:border-primary/30;
+    transition: all 0.2s ease;
   }
 
-  /* NVIDIA input styles */
-  .input-nvidia {
-    @apply bg-input border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground transition-all duration-200;
+  /* Blue input styles */
+  .input-minimal {
+    @apply bg-input border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground;
+    transition: all 0.2s ease;
   }
 
-  .input-nvidia:focus {
-    @apply outline-none ring-2 ring-primary/20 border-primary bg-input;
+  .input-minimal:focus {
+    @apply outline-none ring-2 ring-primary border-primary bg-input;
   }
 
-  /* Remove any gradients and shadows */
-  .no-gradient {
-    background: none !important;
-    box-shadow: none !important;
+  /* Blue card professional styles */
+  .card-professional {
+    @apply bg-card text-card-foreground rounded-lg border border-border p-6 hover:border-primary/30 shadow-sm hover:shadow-md;
+    transition: all 0.2s ease;
   }
 
-  /* Clean table styles */
-  .nvidia-table {
-    @apply bg-card border border-border rounded-lg overflow-hidden;
+  /* Blue hero section */
+  .hero-section {
+    @apply bg-gradient-to-br from-background to-accent/30;
   }
 
-  .nvidia-table th {
-    @apply bg-secondary text-secondary-foreground font-semibold;
+  /* Blue metal card styles */
+  .metal-card {
+    @apply bg-card border border-border rounded-lg p-6 shadow-sm text-card-foreground;
+    transition: all 0.2s ease;
   }
 
-  .nvidia-table td {
-    @apply bg-card text-card-foreground;
+  .metal-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md;
+    transition: all 0.2s ease;
   }
 
-  .nvidia-table tr:hover td {
-    @apply bg-accent;
+  .metal-button-outline {
+    @apply bg-card border border-border text-card-foreground hover:bg-accent hover:border-primary/30;
+    transition: all 0.2s ease;
   }
 }
