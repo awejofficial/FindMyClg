@@ -6,16 +6,16 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-blue-500 text-white hover:bg-blue-600 shadow-sm hover:shadow-md",
-        destructive: "bg-red-500 text-white hover:bg-red-600 shadow-sm hover:shadow-md",
-        outline: "border border-slate-300 bg-white hover:bg-slate-50 hover:border-blue-300 text-slate-700",
-        secondary: "bg-slate-100 text-slate-700 hover:bg-slate-200",
-        ghost: "hover:bg-slate-100 hover:text-slate-900 text-slate-700",
-        link: "text-blue-500 underline-offset-4 hover:underline hover:text-blue-600",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md",
+        destructive: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md",
+        outline: "border border-secondary bg-card hover:bg-accent hover:border-secondary/70 text-card-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+        ghost: "hover:bg-accent hover:text-accent-foreground text-card-foreground",
+        link: "text-primary underline-offset-4 hover:underline hover:text-primary/80",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -1,14 +1,32 @@
 
-/* Blue Utility Classes */
+/* New Color Palette Utility Classes */
 
 @layer utilities {
-  /* Blue utilities */
-  .text-nvidia-green {
+  /* Primary utilities */
+  .text-primary-accent {
     color: hsl(var(--primary));
   }
 
-  .bg-nvidia-green {
+  .bg-primary-accent {
     background-color: hsl(var(--primary));
+  }
+
+  /* Secondary utilities */
+  .text-secondary-accent {
+    color: hsl(var(--secondary));
+  }
+
+  .bg-secondary-accent {
+    background-color: hsl(var(--secondary));
+  }
+
+  /* Dark section utilities */
+  .text-dark-section {
+    color: hsl(var(--dark-section));
+  }
+
+  .bg-dark-section {
+    background-color: hsl(var(--dark-section));
   }
 
   /* Container */
@@ -16,61 +34,31 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  .container-nvidia {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  /* Grid layouts with blue theme */
-  .grid-nvidia-4 {
+  /* Grid layouts */
+  .grid-minimal-4 {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
   }
 
-  /* Blue transitions */
+  /* Transitions */
   .transition-minimal {
     transition: all 0.2s ease;
   }
 
-  .transition-nvidia {
-    transition: all 0.2s ease;
-  }
-
-  /* Blue focus styles */
+  /* Focus styles */
   .focus-minimal {
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
 
-  .focus-nvidia {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  /* Remove old color overrides and ensure consistency */
+  .text-destructive {
+    color: hsl(var(--primary)) !important;
   }
 
-  /* Blue gradient backgrounds */
-  .bg-blue-gradient {
-    background: var(--blue-gradient);
+  .bg-destructive {
+    background-color: hsl(var(--primary)) !important;
   }
 
-  .bg-blue-light-gradient {
-    background: var(--blue-light-gradient);
-  }
-
-  /* Remove all yellow/green colors and replace with blue-based error colors */
-  .text-yellow-600,
-  .text-yellow-500,
-  .text-amber-600,
-  .text-amber-500,
-  .text-green-600,
-  .text-green-500 {
-    color: hsl(var(--destructive)) !important;
-  }
-
-  .bg-yellow-50,
-  .bg-amber-50,
-  .bg-green-50 {
-    background-color: hsl(var(--destructive) / 0.1) !important;
-  }
-
-  .border-yellow-200,
-  .border-amber-200,
-  .border-green-200 {
-    border-color: hsl(var(--destructive) / 0.3) !important;
+  .border-destructive {
+    border-color: hsl(var(--primary)) !important;
   }
 }

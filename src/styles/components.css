@@ -1,30 +1,36 @@
 
-/* Blue Component Styles */
+/* New Color Palette Component Styles */
 
 @layer utilities {
-  /* Blue card styles */
+  /* Card styles with new palette */
   .minimal-card {
     @apply bg-card border border-border rounded-lg p-6 shadow-sm text-card-foreground;
     transition: all 0.2s ease;
   }
 
   .minimal-card:hover {
-    @apply border-primary/30 shadow-md;
+    @apply border-secondary/50 shadow-md;
   }
 
-  /* Blue button styles */
-  .btn-nvidia {
+  /* Button styles with new palette */
+  .btn-primary {
     @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 shadow-sm hover:shadow-md;
     transition: all 0.2s ease;
   }
 
-  /* Blue secondary button */
-  .btn-minimal {
-    @apply bg-card border border-border text-card-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent hover:border-primary/30;
+  /* Secondary button */
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-secondary/90;
     transition: all 0.2s ease;
   }
 
-  /* Blue input styles */
+  /* Minimal button */
+  .btn-minimal {
+    @apply bg-card border border-border text-card-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent hover:border-secondary/50;
+    transition: all 0.2s ease;
+  }
+
+  /* Input styles */
   .input-minimal {
     @apply bg-input border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground;
     transition: all 0.2s ease;
@@ -34,30 +40,20 @@
     @apply outline-none ring-2 ring-primary border-primary bg-input;
   }
 
-  /* Blue card professional styles */
+  /* Professional card styles */
   .card-professional {
-    @apply bg-card text-card-foreground rounded-lg border border-border p-6 hover:border-primary/30 shadow-sm hover:shadow-md;
+    @apply bg-card text-card-foreground rounded-lg border border-border p-6 hover:border-secondary/50 shadow-sm hover:shadow-md;
     transition: all 0.2s ease;
   }
 
-  /* Blue hero section */
+  /* Hero section */
   .hero-section {
-    @apply bg-gradient-to-br from-background to-accent/30;
+    @apply bg-gradient-to-br from-background to-accent/10;
   }
 
-  /* Blue metal card styles */
-  .metal-card {
-    @apply bg-card border border-border rounded-lg p-6 shadow-sm text-card-foreground;
-    transition: all 0.2s ease;
-  }
-
-  .metal-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md;
-    transition: all 0.2s ease;
-  }
-
-  .metal-button-outline {
-    @apply bg-card border border-border text-card-foreground hover:bg-accent hover:border-primary/30;
-    transition: all 0.2s ease;
+  /* Dark section styles */
+  .dark-section {
+    background-color: hsl(var(--dark-section));
+    color: hsl(var(--background));
   }
 }

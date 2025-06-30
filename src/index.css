@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import organized CSS files */
+/* Import organized CSS files with new color palette */
 @import './styles/base.css';
 @import './styles/components.css';
 @import './styles/utilities.css';
