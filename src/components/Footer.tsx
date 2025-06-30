@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Github, Instagram, Linkedin, Heart, MessageSquare, Info } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Github, Instagram, Linkedin, Heart } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -19,24 +18,6 @@ export const Footer: React.FC = () => {
             <p className="text-sm text-secondary">
               © 2025 FindMyClg. All rights reserved.
             </p>
-          </div>
-
-          {/* Center section - Navigation links */}
-          <div className="flex items-center space-x-6">
-            <Link
-              to="/feedback"
-              className="flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-200 text-sm font-medium"
-            >
-              <MessageSquare className="h-4 w-4" />
-              Feedback
-            </Link>
-            <Link
-              to="/about"
-              className="flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-200 text-sm font-medium"
-            >
-              <Info className="h-4 w-4" />
-              About
-            </Link>
           </div>
           
           {/* Right section - Social links */}

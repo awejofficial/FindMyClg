@@ -1,5 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { MessageSquare, Info } from 'lucide-react';
 
 const rotatingContent = [
   {
@@ -68,6 +70,24 @@ export const Header: React.FC = () => {
               </p>
             </div>
           </div>
+
+          {/* Navigation Links */}
+          <nav className="flex items-center space-x-6">
+            <Link
+              to="/feedback"
+              className="flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-200 text-sm font-medium"
+            >
+              <MessageSquare className="h-4 w-4" />
+              <span className="hidden sm:inline">Feedback</span>
+            </Link>
+            <Link
+              to="/about"
+              className="flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-200 text-sm font-medium"
+            >
+              <Info className="h-4 w-4" />
+              <span className="hidden sm:inline">About</span>
+            </Link>
+          </nav>
         </div>
       </div>
     </header>
