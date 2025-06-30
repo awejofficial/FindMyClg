@@ -21,7 +21,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartClick }) => {
             
             <h1 className="text-5xl lg:text-6xl font-bold text-foreground mb-8 leading-tight text-center">
               Find Your Perfect
-              <span className="block bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mt-2">DSE Engineering College</span>
+              <span className="text-5xl lg:text-6xl font-bold text-foreground mb-8 leading-tight text-center">DSE Engineering College</span>
             </h1>
             
             <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed text-center">
