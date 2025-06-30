@@ -16,9 +16,7 @@ export const Footer: React.FC = () => {
               by 
               <span className="font-bold text-primary">Awej</span>
             </p>
-            <p className="text-sm text-muted-foreground">
-              © 2025 FindMyClg. All rights reserved.
-            </p>
+            
           </div>
 
           {/* Center section - Navigation links */}
@@ -69,6 +67,9 @@ export const Footer: React.FC = () => {
               aria-label="Connect on LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
+              <p className="text-sm text-muted-foreground">
+              © 2025 FindMyClg. All rights reserved.
+            </p>
             </a>
           </div>
         </div>
