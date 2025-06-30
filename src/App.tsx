@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import AdminAuth from "./pages/AdminAuth";
 import AdminPanel from "./pages/AdminPanel";
+import Feedback from "./pages/Feedback";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -34,6 +36,8 @@ const App: React.FC = () => {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin-auth" element={<AdminAuth />} />
                 <Route path="/admin-panel" element={<AdminPanel />} />
+                <Route path="/feedback" element={<Feedback />} />
+                <Route path="/about" element={<About />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
