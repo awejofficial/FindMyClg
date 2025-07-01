@@ -75,7 +75,7 @@ export const FeedbackSection: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <Card className="bg-green-50 border-green-200 shadow-md">
+      <Card className="bg-green-50 border-green-200">
         <CardContent className="pt-6">
           <div className="flex items-center gap-3 text-green-800">
             <CheckCircle className="h-6 w-6" />
@@ -97,9 +97,9 @@ export const FeedbackSection: React.FC = () => {
   }
 
   return (
-    <Card className="bg-[#F7F8F3] border-[#78BCC4]/50 shadow-md">
+    <Card className="bg-[#F7F8F3] border-[#78BCC4]/30">
       <CardHeader>
-        <CardTitle className="text-[#002C3E] flex items-center gap-2 font-semibold">
+        <CardTitle className="text-[#002C3E] flex items-center gap-2">
           <MessageSquare className="h-5 w-5 text-[#F7444E]" />
           Share Your Feedback
         </CardTitle>
@@ -111,19 +111,19 @@ export const FeedbackSection: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="feedback-name" className="text-[#002C3E] font-medium">Name</Label>
+              <Label htmlFor="feedback-name" className="text-[#002C3E]">Name</Label>
               <Input
                 id="feedback-name"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Your name"
-                className="bg-white border-[#78BCC4]/60 focus:border-[#d43b44] focus:ring-[#d43b44]"
+                className="bg-white border-gray-300 focus:border-[#F7444E] focus:ring-[#F7444E]"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="feedback-email" className="text-[#002C3E] font-medium">Email</Label>
+              <Label htmlFor="feedback-email" className="text-[#002C3E]">Email</Label>
               <Input
                 id="feedback-email"
                 name="email"
@@ -131,14 +131,14 @@ export const FeedbackSection: React.FC = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="your.email@example.com"
-                className="bg-white border-[#78BCC4]/60 focus:border-[#d43b44] focus:ring-[#d43b44]"
+                className="bg-white border-gray-300 focus:border-[#F7444E] focus:ring-[#F7444E]"
                 required
               />
             </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="feedback-message" className="text-[#002C3E] font-medium">Message</Label>
+            <Label htmlFor="feedback-message" className="text-[#002C3E]">Message</Label>
             <Textarea
               id="feedback-message"
               name="message"
@@ -146,14 +146,14 @@ export const FeedbackSection: React.FC = () => {
               onChange={handleInputChange}
               placeholder="Share your thoughts, suggestions, or report any issues..."
               rows={4}
-              className="bg-white border-[#78BCC4]/60 focus:border-[#d43b44] focus:ring-[#d43b44]"
+              className="bg-white border-gray-300 focus:border-[#F7444E] focus:ring-[#F7444E]"
               required
             />
           </div>
           
           <Button 
             type="submit" 
-            className="w-full bg-[#F7444E] text-white hover:bg-[#d43b44] shadow-sm hover:shadow-md"
+            className="w-full bg-[#F7444E] text-white hover:bg-[#F7444E]/90"
             disabled={isSubmitting}
           >
             {isSubmitting ? (

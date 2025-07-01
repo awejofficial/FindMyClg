@@ -4,12 +4,12 @@ import { Github, Instagram, Linkedin, Heart } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-dark-section text-[#F7F8F3] border-t border-secondary py-6 mt-auto">
+    <footer className="bg-dark-section text-background border-t border-secondary py-6 mt-auto">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
           {/* Left section - Brand and copyright */}
           <div className="flex flex-col items-center lg:items-start space-y-2">
-            <p className="text-lg font-medium text-[#F7F8F3] flex items-center gap-2">
+            <p className="text-lg font-medium text-background flex items-center gap-2">
               Made with 
               <Heart className="h-4 w-4 text-primary fill-current" />
               by 
