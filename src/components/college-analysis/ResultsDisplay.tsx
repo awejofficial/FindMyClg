@@ -3,6 +3,7 @@ import React from 'react';
 import { GraduationCap } from "lucide-react";
 import { TNEAStyleResultsTable } from "./TNEAStyleResultsTable";
 import { FeedbackSection } from "./FeedbackSection";
+import { CutoffButtons } from "./CutoffButtons";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CollegeMatch, FormData } from "./FormDataTypes";
@@ -42,6 +43,10 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
           </div>
         </div>
 
+        <div className="max-w-7xl mx-auto px-4">
+          <CutoffButtons />
+        </div>
+
         <TNEAStyleResultsTable 
           results={results} 
           studentName={formData.fullName}
@@ -50,7 +55,7 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
         />
 
         {/* Feedback Section */}
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 py-8 mb-12">
           <FeedbackSection />
         </div>
       </div>

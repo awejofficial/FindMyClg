@@ -5,33 +5,33 @@ import { Search, TrendingUp, FileText, Target, Users, BookOpen } from 'lucide-re
 const features = [
   {
     icon: Target,
-    title: 'Built for DSE Students',
-    description: 'Laser-focused on Direct Second Year (DSE) B.Tech lateral entry admissions — not generalised for all students.',
+    title: '🔧 Built for DSE Students',
+    description: 'Not a generic portal — laser-focused on Direct Second Year (DSE) B.Tech admissions only.',
   },
   {
     icon: TrendingUp,
-    title: 'Real Data. Real Guidance.',
-    description: 'Authentic government-published CAP cutoff data from Rounds I, II, and III across hundreds of colleges.',
+    title: '📑 Real Data. Real Guidance.',
+    description: 'We use government-published CAP cutoff data from 2024–25 (Rounds I, II, III).',
   },
   {
     icon: Search,
-    title: 'Smarter Search System',
-    description: 'You don\'t search colleges; we match you with them based on your diploma aggregate marks and preferences.',
+    title: '🤖 Smart Search System',
+    description: 'You don\'t search colleges — we match you with them based on your marks, category, and city preference.',
   },
   {
     icon: FileText,
-    title: 'City-Wise Filters',
-    description: 'Want only Pune, Mumbai, Nagpur colleges? Filter by your preferred cities and get targeted results.',
+    title: '🌆 City-Wise Filters',
+    description: 'Want only Pune, Mumbai, Nagpur, or Nashik? Just choose your city — we\'ll handle the rest.',
   },
   {
     icon: Users,
-    title: 'Category Based Suggestions',
-    description: 'Complete support for all categories — GOPEN, EWS, OBC, SC, ST with accurate cutoff predictions.',
+    title: '👥 Category-Based Results',
+    description: 'Full support for all categories — GOPEN, EWS, OBC, SC, ST — with actual past-year cutoffs.',
   },
   {
     icon: BookOpen,
-    title: 'Built by Students, for Students',
-    description: 'Designed with real problems diploma students face in mind — no more scrolling through government PDFs.',
+    title: '🙌 Built by Students, for Students',
+    description: 'Designed by diploma graduates who faced the same confusion — and built a solution that just works.',
   }
 ];
 
