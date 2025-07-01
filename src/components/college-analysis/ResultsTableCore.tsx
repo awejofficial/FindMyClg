@@ -28,7 +28,7 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
   const isMobile = useIsMobile();
 
   return (
-    <div className="bg-white rounded-lg border overflow-hidden">
+    <div className="bg-white rounded-lg border overflow-hidden" data-results-table>
       {/* Mobile: Horizontal scroll container */}
       <div className="overflow-x-auto">
         <div className={isMobile ? "min-w-[800px]" : ""}>
@@ -47,20 +47,28 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currentResults.map((college, index) => {
-                const collegeKey = `${college.collegeName}-${college.branch}-${college.category}`;
-                
-                return (
-                  <ResultsTableRow
-                    key={collegeKey}
-                    college={college}
-                    index={index}
-                    studentAggregate={studentAggregate}
-                    isShortlisted={false}
-                    onToggleShortlist={() => {}} // Disabled
-                  />
-                );
-              })}
+              {currentResults.length > 0 ? (
+                currentResults.map((college, index) => {
+                  const collegeKey = `${college.collegeName}-${college.branch}-${college.category}`;
+                  
+                  return (
+                    <ResultsTableRow
+                      key={collegeKey}
+                      college={college}
+                      index={index}
+                      studentAggregate={studentAggregate}
+                      isShortlisted={false}
+                      onToggleShortlist={() => {}} // Disabled
+                    />
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <td colSpan={9} className="text-center py-8 text-gray-500">
+                    No results found. Try adjusting your filters.
+                  </td>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>

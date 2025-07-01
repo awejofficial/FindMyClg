@@ -20,14 +20,23 @@ export const usePaginationLogic = (
   const currentResults = filteredResults.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      // Smooth scroll to top of results
+      const resultsElement = document.querySelector('[data-results-table]');
+      if (resultsElement) {
+        resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
   };
 
   return {
     currentPage,
     totalPages,
     currentResults,
-    handlePageChange
+    handlePageChange,
+    hasResults: filteredResults.length > 0
   };
 };

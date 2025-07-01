@@ -37,18 +37,18 @@ const features = [
 
 export const FeatureCards: React.FC = () => {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold text-black mb-4">
+        <div className="text-center mb-12 animate-fade-in">
+          <h2 className="text-3xl font-bold text-black mb-3">
             🎯 What Makes FindMyClg Different?
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             A student-first platform designed specifically for diploma students pursuing DSE admissions in Maharashtra
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto animate-slide-up">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto animate-slide-up">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -57,15 +57,15 @@ export const FeatureCards: React.FC = () => {
                 className="card-professional group animate-scale-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="flex items-center justify-center w-14 h-14 bg-white border border-gray-200 rounded-xl mb-6 group-hover:border-black transition-all duration-200">
-                  <Icon className="h-7 w-7 text-black" />
+                <div className="flex items-center justify-center w-12 h-12 bg-white border border-gray-200 rounded-xl mb-4 group-hover:border-black transition-all duration-200">
+                  <Icon className="h-6 w-6 text-black" />
                 </div>
                 
-                <h3 className="text-xl font-semibold text-black mb-3">
+                <h3 className="text-lg font-semibold text-black mb-2">
                   {feature.title}
                 </h3>
                 
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed text-sm">
                   {feature.description}
                 </p>
               </div>
