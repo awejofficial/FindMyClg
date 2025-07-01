@@ -60,7 +60,8 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
     return rangeWithDots;
   };
 
-  if (totalPages <= 1) return null;
+  // Always show pagination controls when there are results, even if only 1 page
+  if (totalResults === 0) return null;
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
@@ -68,50 +69,52 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
         Showing {startResult}-{endResult} of {totalResults} results
       </div>
       
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious 
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage > 1) onPageChange(currentPage - 1);
-              }}
-              className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-            />
-          </PaginationItem>
-
-          {getVisiblePages().map((page, index) => (
-            <PaginationItem key={index}>
-              {page === '...' ? (
-                <PaginationEllipsis />
-              ) : (
-                <PaginationLink
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onPageChange(page as number);
-                  }}
-                  isActive={currentPage === page}
-                >
-                  {page}
-                </PaginationLink>
-              )}
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) onPageChange(currentPage - 1);
+                }}
+                className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+              />
             </PaginationItem>
-          ))}
 
-          <PaginationItem>
-            <PaginationNext 
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage < totalPages) onPageChange(currentPage + 1);
-              }}
-              className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {getVisiblePages().map((page, index) => (
+              <PaginationItem key={index}>
+                {page === '...' ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onPageChange(page as number);
+                    }}
+                    isActive={currentPage === page}
+                  >
+                    {page}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext 
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPages) onPageChange(currentPage + 1);
+                }}
+                className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

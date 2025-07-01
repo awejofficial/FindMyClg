@@ -3,7 +3,7 @@ import React from 'react';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CollegeMatch } from "./FormDataTypes";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ResultsTableRow } from "./ResultsTableRow";
+import { LazyResultsTableRow } from "./LazyResultsTableRow";
 import { PaginationControls } from "@/components/PaginationControls";
 
 interface ResultsTableCoreProps {
@@ -59,13 +59,11 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
                   const collegeKey = `${college.collegeName}-${college.branch}-${college.category}-${index}`;
                   
                   return (
-                    <ResultsTableRow
+                    <LazyResultsTableRow
                       key={collegeKey}
                       college={college}
                       index={index}
                       studentAggregate={studentAggregate}
-                      isShortlisted={false}
-                      onToggleShortlist={() => {}} // Disabled
                     />
                   );
                 })
@@ -81,7 +79,7 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
         </div>
       </div>
 
-      {/* Pagination Controls - Show even if only one page to display count */}
+      {/* Pagination Controls - Always show when there are results */}
       {filteredResultsLength > 0 && (
         <div className="p-4 border-t bg-gray-50">
           <PaginationControls

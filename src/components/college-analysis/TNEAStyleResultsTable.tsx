@@ -23,7 +23,7 @@ export const TNEAStyleResultsTable: React.FC<TNEAStyleResultsTableProps> = ({
   onRefillForm 
 }) => {
   const [showGoToTop, setShowGoToTop] = useState(false);
-  const resultsPerPage = 15;
+  const resultsPerPage = 35; // Updated to 35 results per page
 
   // Use the filter logic hook
   const {

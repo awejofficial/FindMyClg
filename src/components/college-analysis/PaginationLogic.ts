@@ -1,10 +1,10 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CollegeMatch } from "./FormDataTypes";
 
 export const usePaginationLogic = (
   filteredResults: CollegeMatch[], 
-  resultsPerPage: number = 15
+  resultsPerPage: number = 35
 ) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -13,14 +13,23 @@ export const usePaginationLogic = (
     setCurrentPage(1);
   }, [filteredResults]);
 
-  // Pagination calculations
-  const totalPages = Math.ceil(filteredResults.length / resultsPerPage);
-  const startIndex = (currentPage - 1) * resultsPerPage;
-  const endIndex = startIndex + resultsPerPage;
-  const currentResults = filteredResults.slice(startIndex, endIndex);
+  // Memoize pagination calculations for performance
+  const paginationData = useMemo(() => {
+    const totalPages = Math.ceil(filteredResults.length / resultsPerPage);
+    const startIndex = (currentPage - 1) * resultsPerPage;
+    const endIndex = startIndex + resultsPerPage;
+    const currentResults = filteredResults.slice(startIndex, endIndex);
+
+    return {
+      totalPages,
+      startIndex,
+      endIndex,
+      currentResults
+    };
+  }, [filteredResults, currentPage, resultsPerPage]);
 
   const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= paginationData.totalPages) {
       setCurrentPage(page);
       // Smooth scroll to top of results
       const resultsElement = document.querySelector('[data-results-table]');
@@ -34,12 +43,12 @@ export const usePaginationLogic = (
 
   return {
     currentPage,
-    totalPages,
-    currentResults,
+    totalPages: paginationData.totalPages,
+    currentResults: paginationData.currentResults,
     handlePageChange,
     hasResults: filteredResults.length > 0,
     totalResults: filteredResults.length,
-    startIndex: startIndex + 1,
-    endIndex: Math.min(endIndex, filteredResults.length)
+    startIndex: paginationData.startIndex + 1,
+    endIndex: Math.min(paginationData.endIndex, filteredResults.length)
   };
 };
