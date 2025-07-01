@@ -4,45 +4,41 @@
 @layer utilities {
   /* Card styles with new palette */
   .minimal-card {
-    @apply bg-card border border-border rounded-lg p-6 shadow-sm text-card-foreground;
+    @apply bg-card border border-[#78BCC4]/50 rounded-lg p-6 shadow-sm text-card-foreground hover:border-[#78BCC4] hover:shadow-md;
     transition: all 0.2s ease;
-  }
-
-  .minimal-card:hover {
-    @apply border-secondary/50 shadow-md;
   }
 
   /* Button styles with new palette */
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 shadow-sm hover:shadow-md;
+    @apply bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-[#d43b44] shadow-sm hover:shadow-md;
     transition: all 0.2s ease;
   }
 
   /* Secondary button */
   .btn-secondary {
-    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-secondary/90;
+    @apply bg-secondary text-white px-6 py-3 rounded-lg font-medium hover:bg-[#5da3ac] shadow-sm hover:shadow-md;
     transition: all 0.2s ease;
   }
 
   /* Minimal button */
   .btn-minimal {
-    @apply bg-card border border-border text-card-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent hover:border-secondary/50;
+    @apply bg-[#F7F8F3] border border-[#78BCC4]/60 text-[#002C3E] px-6 py-3 rounded-lg font-medium hover:bg-[#78BCC4]/20 hover:border-[#78BCC4] shadow-sm hover:shadow-md;
     transition: all 0.2s ease;
   }
 
   /* Input styles */
   .input-minimal {
-    @apply bg-input border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground;
+    @apply bg-input border border-[#78BCC4]/60 rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground;
     transition: all 0.2s ease;
   }
 
   .input-minimal:focus {
-    @apply outline-none ring-2 ring-primary border-primary bg-input;
+    @apply outline-none ring-2 ring-[#d43b44] border-[#d43b44] bg-input;
   }
 
   /* Professional card styles */
   .card-professional {
-    @apply bg-card text-card-foreground rounded-lg border border-border p-6 hover:border-secondary/50 shadow-sm hover:shadow-md;
+    @apply bg-card text-[#002C3E] rounded-lg border border-[#78BCC4]/50 p-6 hover:border-[#78BCC4] shadow-sm hover:shadow-md;
     transition: all 0.2s ease;
   }
 
@@ -54,6 +50,12 @@
   /* Dark section styles */
   .dark-section {
     background-color: hsl(var(--dark-section));
-    color: hsl(var(--background));
+    color: #F7F8F3;
+  }
+
+  /* Filter and category chips */
+  .filter-chip {
+    @apply bg-[#78BCC4]/20 hover:bg-[#78BCC4]/30 text-[#002C3E] border border-[#78BCC4]/40 hover:border-[#78BCC4]/60;
+    transition: all 0.2s ease;
   }
 }
