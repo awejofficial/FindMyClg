@@ -27,6 +27,13 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
 }) => {
   const isMobile = useIsMobile();
 
+  console.log('ResultsTableCore Debug:', {
+    currentResultsLength: currentResults.length,
+    totalPages,
+    currentPage,
+    filteredResultsLength
+  });
+
   return (
     <div className="bg-white rounded-lg border overflow-hidden" data-results-table>
       {/* Mobile: Horizontal scroll container */}
@@ -49,7 +56,7 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
             <TableBody>
               {currentResults.length > 0 ? (
                 currentResults.map((college, index) => {
-                  const collegeKey = `${college.collegeName}-${college.branch}-${college.category}`;
+                  const collegeKey = `${college.collegeName}-${college.branch}-${college.category}-${index}`;
                   
                   return (
                     <ResultsTableRow
@@ -74,8 +81,8 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
         </div>
       </div>
 
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
+      {/* Pagination Controls - Show even if only one page to display count */}
+      {filteredResultsLength > 0 && (
         <div className="p-4 border-t bg-gray-50">
           <PaginationControls
             currentPage={currentPage}

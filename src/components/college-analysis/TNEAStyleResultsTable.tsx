@@ -23,7 +23,7 @@ export const TNEAStyleResultsTable: React.FC<TNEAStyleResultsTableProps> = ({
   onRefillForm 
 }) => {
   const [showGoToTop, setShowGoToTop] = useState(false);
-  const resultsPerPage = 50;
+  const resultsPerPage = 15;
 
   // Use the filter logic hook
   const {
@@ -43,7 +43,10 @@ export const TNEAStyleResultsTable: React.FC<TNEAStyleResultsTableProps> = ({
     currentPage,
     totalPages,
     currentResults,
-    handlePageChange
+    handlePageChange,
+    totalResults,
+    startIndex,
+    endIndex
   } = usePaginationLogic(filteredResults, resultsPerPage);
 
   // Scroll detection for go-to-top button
@@ -62,6 +65,17 @@ export const TNEAStyleResultsTable: React.FC<TNEAStyleResultsTableProps> = ({
   const handleExportToPDF = () => {
     exportToPDF(studentName, studentAggregate, filteredResults);
   };
+
+  // Debug log to check pagination
+  console.log('Pagination Debug:', {
+    totalResults: filteredResults.length,
+    currentPage,
+    totalPages,
+    currentResultsLength: currentResults.length,
+    startIndex,
+    endIndex,
+    resultsPerPage
+  });
 
   return (
     <div className="space-y-4">

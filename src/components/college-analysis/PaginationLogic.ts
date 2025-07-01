@@ -4,7 +4,7 @@ import { CollegeMatch } from "./FormDataTypes";
 
 export const usePaginationLogic = (
   filteredResults: CollegeMatch[], 
-  resultsPerPage: number = 50
+  resultsPerPage: number = 15
 ) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -37,6 +37,9 @@ export const usePaginationLogic = (
     totalPages,
     currentResults,
     handlePageChange,
-    hasResults: filteredResults.length > 0
+    hasResults: filteredResults.length > 0,
+    totalResults: filteredResults.length,
+    startIndex: startIndex + 1,
+    endIndex: Math.min(endIndex, filteredResults.length)
   };
 };
