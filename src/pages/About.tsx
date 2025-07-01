@@ -1,12 +1,14 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Info, Target, Users, Award, BookOpen } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <Header />
       <div className="flex-1 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">

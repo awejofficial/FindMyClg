@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MessageSquare, Send } from 'lucide-react';
 
@@ -17,6 +18,7 @@ const Feedback: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <Header />
       <div className="flex-1 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
