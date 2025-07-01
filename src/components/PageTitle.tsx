@@ -3,21 +3,21 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const getPageTitle = (pathname: string): string => {
-  const baseName = 'DSE College Finder';
+  const baseName = 'FindMyClg - by Awej';
   
   switch (pathname) {
     case '/':
-      return `${baseName} | Home`;
+      return `Home | ${baseName}`;
     case '/admin':
-      return `${baseName} | Admin`;
+      return `Admin | ${baseName}`;
     case '/admin-auth':
-      return `${baseName} | Admin Login`;
+      return `Admin Login | ${baseName}`;
     case '/admin-panel':
-      return `${baseName} | Admin Panel`;
+      return `Admin Panel | ${baseName}`;
     case '/feedback':
-      return `${baseName} | Feedback`;
+      return `Feedback | ${baseName}`;
     case '/about':
-      return `${baseName} | About Us`;
+      return `About Us | ${baseName}`;
     default:
       return baseName;
   }
