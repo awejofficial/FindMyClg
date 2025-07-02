@@ -19,6 +19,29 @@
     animation: bounce 3s infinite;
   }
 
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-delay-2 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  .animate-float-delay-3 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 3s;
+  }
+
+  .animate-float-delay-4 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 4s;
+  }
+
+  .animate-bounce-gentle {
+    animation: bounceGentle 4s ease-in-out infinite;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -64,6 +87,29 @@
     }
     90% {
       transform: translate3d(0, -2px, 0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+      transform: translateY(-10px) rotate(1deg);
+    }
+    66% {
+      transform: translateY(5px) rotate(-1deg);
+    }
+  }
+
+  @keyframes bounceGentle {
+    0%, 100% {
+      transform: translateY(0px);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateY(-8px);
+      opacity: 1;
     }
   }
 }
