@@ -151,7 +151,13 @@ export const fetchAvailableCategories = async (): Promise<string[]> => {
       return [];
     }
 
-    return data?.map((item: { category: string }) => item.category) || [];
+    // Filter out any empty, null, or undefined categories and ensure uniqueness
+    const validCategories = data
+      ?.map((item: { category: string }) => item.category)
+      .filter((category: string) => category && category.trim() !== '')
+      .filter((category: string, index: number, array: string[]) => array.indexOf(category) === index) || [];
+
+    return validCategories.sort();
   } catch (error) {
     console.error('Failed to fetch categories:', error);
     return [];

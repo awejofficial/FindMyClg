@@ -19,6 +19,9 @@ export const AcademicDetailsStep: React.FC<AcademicDetailsStepProps> = ({
   onAggregateChange,
   onCategoryChange
 }) => {
+  // Filter out any empty or invalid categories
+  const validCategories = availableCategories.filter(cat => cat && cat.trim() !== '');
+
   return (
     <Card className="bg-card border-border shadow-sm text-card-foreground">
       <CardHeader className="space-y-1">
@@ -50,11 +53,11 @@ export const AcademicDetailsStep: React.FC<AcademicDetailsStepProps> = ({
               onChange={(e) => onCategoryChange(e.target.value)}
             >
               <option value="" disabled>Select your category</option>
-              {availableCategories.map((cat) => (
+              {validCategories.map((cat) => (
                 <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
-            {availableCategories.length === 0 && (
+            {validCategories.length === 0 && (
               <p className="text-sm text-destructive bg-destructive/10 p-2 rounded border border-destructive/30">
                 No categories available. Please contact admin to upload cutoff data.
               </p>
