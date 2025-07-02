@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Target, TrendingUp, Users } from 'lucide-react';
+import { ArrowRight, Target, TrendingUp, Users, GraduationCap, MapPin, BookOpen } from 'lucide-react';
 
 interface HeroSectionProps {
   onStartClick: () => void;
@@ -15,13 +15,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartClick }) => {
           {/* Main Hero Content */}
           <div className="mb-12 flex flex-col items-center">
             <div className="inline-flex items-center gap-2 bg-card border border-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6 shadow-sm">
-              <Target className="h-4 w-4" />
+              <GraduationCap className="h-4 w-4" />
               <span>Built for DSE Students</span>
             </div>
             
             <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight text-center">
               🎓 Find Your Perfect
-              <span className="block text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight text-center">
+              <span className="block text-4xl lg:text-5xl font-bold text-primary mb-6 leading-tight text-center">
                 DSE Engineering College in Maharashtra</span>
             </h1>
             
@@ -30,8 +30,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartClick }) => {
               Instantly discover colleges you qualify for using official CAP cutoff data (2024–25) — no more guessing, no more government PDFs.
             </p>
 
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-foreground mb-3">🔎 Start Your Journey</h2>
+            <div className="mb-8">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <MapPin className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold text-foreground">🔎 Start Your Journey</h2>
+              </div>
               <p className="text-base text-muted-foreground mb-6">
                 📍 Tap the button below, enter your diploma marks, and get a personalized list of matching colleges.
               </p>
@@ -42,6 +45,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartClick }) => {
                 onClick={onStartClick}
                 className="text-lg px-8 py-4 group bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl text-primary-foreground"
               >
+                <BookOpen className="mr-2 h-5 w-5" />
                 Start Your Journey
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -50,7 +54,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartClick }) => {
 
           {/* Stats Section */}
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-foreground mb-6">📊 Why Students Trust FindMyClg</h2>
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <TrendingUp className="h-6 w-6 text-primary" />
+              <h2 className="text-2xl font-bold text-foreground">📊 Why Students Trust FindMyClg</h2>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up max-w-4xl mx-auto">
               {[
                 { 
@@ -74,12 +81,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartClick }) => {
               ].map((stat, index) => {
                 const Icon = stat.icon;
                 return (
-                  <div key={stat.label} className="bg-card rounded-lg border border-border p-5 text-center group hover:border-primary/30 hover:shadow-md transition-all duration-200 w-full">
-                    <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg mx-auto mb-3 group-hover:bg-primary/20 transition-colors duration-200">
-                      <Icon className="h-5 w-5 text-primary" />
+                  <div key={stat.label} className="bg-card rounded-lg border border-border p-6 text-center group hover:border-primary/30 hover:shadow-md transition-all duration-200 w-full">
+                    <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-200">
+                      <Icon className="h-6 w-6 text-primary" />
                     </div>
                     <div className="text-2xl font-bold text-foreground mb-2">{stat.number}</div>
-                    <div className="font-semibold text-foreground mb-1">{stat.label}</div>
+                    <div className="font-semibold text-foreground mb-2">{stat.label}</div>
                     <div className="text-sm text-muted-foreground">{stat.desc}</div>
                   </div>
                 );

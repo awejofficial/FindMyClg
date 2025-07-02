@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageSquare, Info, Menu, X } from 'lucide-react';
+import { MessageSquare, Info, Menu, X, Home, GraduationCap } from 'lucide-react';
 
 const rotatingContent = [
   {
@@ -50,7 +50,7 @@ export const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand Section */}
           <Link to="/" className="flex items-center gap-4 group">
-            <div className="flex items-center justify-center h-12 w-12 bg-white rounded-lg border border-gray-200 overflow-hidden group-hover:border-[#F7444E]/50 transition-all duration-200 shadow-sm">
+            <div className="flex items-center justify-center h-12 w-12 bg-white rounded-lg border border-gray-200 overflow-hidden group-hover:border-primary/50 transition-all duration-200 shadow-sm">
               <img 
                 src="/lovable-uploads/0b03c0c9-e954-4cec-82c9-48e194652cf3.png" 
                 alt="FindMyCLG Logo" 
@@ -62,7 +62,7 @@ export const Header: React.FC = () => {
             <div className="hidden sm:flex flex-col">
               <div className="h-5 flex items-center">
                 <span 
-                  className={`text-lg font-bold text-[#002C3E] group-hover:text-[#F7444E] transition-all duration-300 ${
+                  className={`text-lg font-bold text-[#002C3E] group-hover:text-primary transition-all duration-300 ${
                     showLogo ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-2'
                   }`}
                 >
@@ -81,26 +81,27 @@ export const Header: React.FC = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
-              className="text-[#002C3E] hover:text-[#F7444E] transition-colors duration-200 text-sm font-medium relative group"
+              className="flex items-center gap-2 text-[#002C3E] hover:text-primary transition-colors duration-200 text-sm font-medium relative group"
             >
+              <Home className="h-4 w-4" />
               Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#F7444E] transition-all duration-200 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
             </Link>
             <Link
               to="/feedback"
-              className="flex items-center gap-2 text-[#002C3E] hover:text-[#F7444E] transition-colors duration-200 text-sm font-medium relative group"
+              className="flex items-center gap-2 text-[#002C3E] hover:text-primary transition-colors duration-200 text-sm font-medium relative group"
             >
               <MessageSquare className="h-4 w-4" />
               Feedback
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#F7444E] transition-all duration-200 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
             </Link>
             <Link
               to="/about"
-              className="flex items-center gap-2 text-[#002C3E] hover:text-[#F7444E] transition-colors duration-200 text-sm font-medium relative group"
+              className="flex items-center gap-2 text-[#002C3E] hover:text-primary transition-colors duration-200 text-sm font-medium relative group"
             >
               <Info className="h-4 w-4" />
               About
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#F7444E] transition-all duration-200 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
             </Link>
           </nav>
 
@@ -125,14 +126,15 @@ export const Header: React.FC = () => {
               <Link
                 to="/"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[#002C3E] hover:text-[#F7444E] transition-colors duration-200 text-sm font-medium py-2 px-3 rounded-lg hover:bg-[#F7F8F3]"
+                className="flex items-center gap-2 text-[#002C3E] hover:text-primary transition-colors duration-200 text-sm font-medium py-2 px-3 rounded-lg hover:bg-[#F7F8F3]"
               >
+                <Home className="h-4 w-4" />
                 Home
               </Link>
               <Link
                 to="/feedback"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 text-[#002C3E] hover:text-[#F7444E] transition-colors duration-200 text-sm font-medium py-2 px-3 rounded-lg hover:bg-[#F7F8F3]"
+                className="flex items-center gap-2 text-[#002C3E] hover:text-primary transition-colors duration-200 text-sm font-medium py-2 px-3 rounded-lg hover:bg-[#F7F8F3]"
               >
                 <MessageSquare className="h-4 w-4" />
                 Feedback
@@ -140,7 +142,7 @@ export const Header: React.FC = () => {
               <Link
                 to="/about"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 text-[#002C3E] hover:text-[#F7444E] transition-colors duration-200 text-sm font-medium py-2 px-3 rounded-lg hover:bg-[#F7F8F3]"
+                className="flex items-center gap-2 text-[#002C3E] hover:text-primary transition-colors duration-200 text-sm font-medium py-2 px-3 rounded-lg hover:bg-[#F7F8F3]"
               >
                 <Info className="h-4 w-4" />
                 About
