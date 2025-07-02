@@ -117,7 +117,7 @@ export const exportToPDF = async (
         
         // Status with color coding
         const status = college.eligible ? '✓' : '✗';
-        doc.setTextColor(college.eligible ? 34, 197, 94 : 239, 68, 68); // Green for eligible, red for not eligible
+        doc.setTextColor(college.eligible ? 34 : 239, college.eligible ? 197 : 68, college.eligible ? 94 : 68);
         doc.setFont(undefined, 'bold');
         doc.text(status, 18, yPosition + 2);
         
@@ -138,13 +138,22 @@ export const exportToPDF = async (
         doc.text(branchName, 115, yPosition + 2);
         
         // Cutoffs with color coding
-        doc.setTextColor(college.cap1Cutoff && college.cap1Cutoff <= studentAggregate ? 34, 197, 94 : 107, 114, 128);
+        const greenColor = [34, 197, 94];
+        const grayColor = [107, 114, 128];
+        
+        doc.setTextColor(college.cap1Cutoff && college.cap1Cutoff <= studentAggregate ? greenColor[0] : grayColor[0], 
+                         college.cap1Cutoff && college.cap1Cutoff <= studentAggregate ? greenColor[1] : grayColor[1], 
+                         college.cap1Cutoff && college.cap1Cutoff <= studentAggregate ? greenColor[2] : grayColor[2]);
         doc.text(college.cap1Cutoff ? `${college.cap1Cutoff}%` : '-', 150, yPosition + 2);
         
-        doc.setTextColor(college.cap2Cutoff && college.cap2Cutoff <= studentAggregate ? 34, 197, 94 : 107, 114, 128);
+        doc.setTextColor(college.cap2Cutoff && college.cap2Cutoff <= studentAggregate ? greenColor[0] : grayColor[0], 
+                         college.cap2Cutoff && college.cap2Cutoff <= studentAggregate ? greenColor[1] : grayColor[1], 
+                         college.cap2Cutoff && college.cap2Cutoff <= studentAggregate ? greenColor[2] : grayColor[2]);
         doc.text(college.cap2Cutoff ? `${college.cap2Cutoff}%` : '-', 165, yPosition + 2);
         
-        doc.setTextColor(college.cap3Cutoff && college.cap3Cutoff <= studentAggregate ? 34, 197, 94 : 107, 114, 128);
+        doc.setTextColor(college.cap3Cutoff && college.cap3Cutoff <= studentAggregate ? greenColor[0] : grayColor[0], 
+                         college.cap3Cutoff && college.cap3Cutoff <= studentAggregate ? greenColor[1] : grayColor[1], 
+                         college.cap3Cutoff && college.cap3Cutoff <= studentAggregate ? greenColor[2] : grayColor[2]);
         doc.text(college.cap3Cutoff ? `${college.cap3Cutoff}%` : '-', 180, yPosition + 2);
         
         doc.setTextColor(0, 0, 0); // Reset color
