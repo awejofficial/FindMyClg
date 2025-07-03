@@ -1,41 +1,33 @@
 
 import React, { useState, useEffect } from 'react';
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp, Check } from "lucide-react";
-import {
-  fetchAllCollegeNames,
-  fetchCollegeTypesForColleges,
-  fetchBranchesForColleges,
-  fetchAvailableCategories,
-  fetchAvailableBranches,
-  fetchAvailableCities,
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { Search, MapPin, Building2, GraduationCap, X } from "lucide-react";
+import { 
+  fetchAvailableBranches, 
   fetchAvailableCollegeTypes,
-  type CollegeTypeInfo,
-  type CollegeBranchInfo
+  fetchAvailableCities,
+  fetchAllCollegeNames
 } from "@/services/databaseService";
-
-interface CollegeSelection {
-  collegeName: string;
-  collegeType: string;
-  selectedBranches: string[];
-  availableBranches: string[];
-  expanded: boolean;
-}
+import { CollegeType } from "../college-analysis/FormDataTypes";
 
 interface MinimalPreferencesStepProps {
   preferredBranches: string[];
   collegeTypes: string[];
   selectedColleges: string[];
-  collegeSelections: CollegeSelection[];
+  collegeSelections: Array<{ collegeName: string; selected: boolean }>;
   category: string;
   selectedCities: string[];
   onBranchChange: (branch: string, checked: boolean) => void;
   onCollegeTypeChange: (collegeType: string, checked: boolean) => void;
   onCollegeSelectionChange: (colleges: string[]) => void;
-  onCollegeSelectionsChange: (selections: CollegeSelection[]) => void;
+  onCollegeSelectionsChange: (selections: Array<{ collegeName: string; selected: boolean }>) => void;
   onCategoryChange: (category: string) => void;
   onCityChange: (cities: string[]) => void;
 }
@@ -44,390 +36,388 @@ export const MinimalPreferencesStep: React.FC<MinimalPreferencesStepProps> = ({
   preferredBranches,
   collegeTypes,
   selectedColleges,
-  collegeSelections,
-  category,
-  selectedCities = [],
+  selectedCities,
   onBranchChange,
   onCollegeTypeChange,
   onCollegeSelectionChange,
-  onCollegeSelectionsChange,
-  onCategoryChange,
   onCityChange
 }) => {
-  const [availableColleges, setAvailableColleges] = useState<string[]>([]);
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [availableBranches, setAvailableBranches] = useState<string[]>([]);
-  const [availableCities, setAvailableCities] = useState<string[]>([]);
   const [availableCollegeTypes, setAvailableCollegeTypes] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [useAllColleges, setUseAllColleges] = useState(false);
-  const [showBranches, setShowBranches] = useState(false);
-  const [showCities, setShowCities] = useState(false);
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
+  const [allColleges, setAllColleges] = useState<string[]>([]);
+  const [collegeSearchTerm, setCollegeSearchTerm] = useState('');
+  const [branchSearchTerm, setBranchSearchTerm] = useState('');
 
   useEffect(() => {
-    loadInitialData();
-  }, []);
-
-  useEffect(() => {
-    if (useAllColleges || selectedColleges.length > 0) {
-      const collegesToLoad = useAllColleges ? availableColleges : selectedColleges;
-      if (collegesToLoad.length > 0) {
-        loadCollegeData(collegesToLoad);
-      }
-    } else {
-      onCollegeSelectionsChange([]);
-    }
-  }, [selectedColleges, useAllColleges, availableColleges]);
-
-  const loadInitialData = async () => {
-    setIsLoading(true);
-    try {
-      const [colleges, categories, branches, cities, collegeTypes] = await Promise.all([
-        fetchAllCollegeNames(),
-        fetchAvailableCategories(),
+    const loadOptions = async () => {
+      const [branches, types, cities, colleges] = await Promise.all([
         fetchAvailableBranches(),
+        fetchAvailableCollegeTypes(),
         fetchAvailableCities(),
-        fetchAvailableCollegeTypes()
+        fetchAllCollegeNames()
       ]);
       
-      setAvailableColleges(colleges);
-      setAvailableCategories(categories);
       setAvailableBranches(branches);
+      setAvailableCollegeTypes(types);
       setAvailableCities(cities);
-      setAvailableCollegeTypes(collegeTypes);
-    } catch (error) {
-      console.error('Failed to load initial data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      setAllColleges(colleges);
+    };
+    
+    loadOptions();
+  }, []);
 
-  const loadCollegeData = async (colleges: string[]) => {
-    if (colleges.length === 0) return;
+  const collegeTypeOptions: CollegeType[] = availableCollegeTypes.map(type => ({
+    value: type,
+    label: type
+  }));
 
-    setIsLoading(true);
-    try {
-      const [collegeTypeData, branchData] = await Promise.all([
-        fetchCollegeTypesForColleges(colleges),
-        fetchBranchesForColleges(colleges)
-      ]);
-
-      const newSelections: CollegeSelection[] = colleges.map(collegeName => {
-        const existingSelection = collegeSelections.find(s => s.collegeName === collegeName);
-        const typeInfo = collegeTypeData.find(ct => ct.college_name === collegeName);
-        const branches = branchData
-          .filter(b => b.college_name === collegeName)
-          .map(b => b.branch_name);
-
-        return {
-          collegeName,
-          collegeType: typeInfo?.college_type || 'Unknown',
-          selectedBranches: existingSelection?.selectedBranches || [],
-          availableBranches: branches,
-          expanded: existingSelection?.expanded ?? false
-        };
+  const handleSelectAllBranches = () => {
+    const allSelected = availableBranches.length === preferredBranches.length;
+    if (allSelected) {
+      // Deselect all
+      preferredBranches.forEach(branch => onBranchChange(branch, false));
+    } else {
+      // Select all
+      availableBranches.forEach(branch => {
+        if (!preferredBranches.includes(branch)) {
+          onBranchChange(branch, true);
+        }
       });
-
-      onCollegeSelectionsChange(newSelections);
-    } catch (error) {
-      console.error('Failed to load college data:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const handleUseAllColleges = () => {
-    setUseAllColleges(!useAllColleges);
-    if (!useAllColleges) {
+  const handleSelectAllCollegeTypes = () => {
+    const allSelected = availableCollegeTypes.length === collegeTypes.length;
+    if (allSelected) {
+      // Deselect all
+      collegeTypes.forEach(type => onCollegeTypeChange(type, false));
+    } else {
+      // Select all
+      availableCollegeTypes.forEach(type => {
+        if (!collegeTypes.includes(type)) {
+          onCollegeTypeChange(type, true);
+        }
+      });
+    }
+  };
+
+  const handleSelectAllCities = () => {
+    const allSelected = availableCities.length === selectedCities.length;
+    if (allSelected) {
+      onCityChange([]);
+    } else {
+      onCityChange(availableCities);
+    }
+  };
+
+  const handleCityToggle = (city: string) => {
+    const newCities = selectedCities.includes(city)
+      ? selectedCities.filter(c => c !== city)
+      : [...selectedCities, city];
+    onCityChange(newCities);
+  };
+
+  const handleSelectAllColleges = () => {
+    const allSelected = allColleges.length === selectedColleges.length;
+    if (allSelected) {
       onCollegeSelectionChange([]);
+    } else {
+      onCollegeSelectionChange(allColleges);
     }
   };
 
-  const handleCollegeToggle = (collegeName: string, checked: boolean) => {
-    const newSelectedColleges = checked
-      ? [...selectedColleges, collegeName]
-      : selectedColleges.filter(c => c !== collegeName);
-    
-    onCollegeSelectionChange(newSelectedColleges);
+  const handleCollegeToggle = (college: string) => {
+    const newColleges = selectedColleges.includes(college)
+      ? selectedColleges.filter(c => c !== college)
+      : [...selectedColleges, college];
+    onCollegeSelectionChange(newColleges);
   };
 
-  const handleBranchToggle = (branchName: string, checked: boolean) => {
-    onBranchChange(branchName, checked);
-  };
+  const filteredBranches = availableBranches.filter(branch =>
+    branch.toLowerCase().includes(branchSearchTerm.toLowerCase())
+  );
 
-  const handleCityToggle = (cityName: string, checked: boolean) => {
-    const newSelectedCities = checked
-      ? [...selectedCities, cityName]
-      : selectedCities.filter(c => c !== cityName);
-    
-    onCityChange(newSelectedCities);
-  };
-
-  const getTotalSelectedBranches = () => {
-    return preferredBranches.length;
-  };
-
-  const getTotalSelectedCities = () => {
-    return selectedCities.length;
-  };
-
-  const getCollegeTypeOptions = () => {
-    const types = [...new Set(collegeSelections.map(s => s.collegeType).filter(t => t !== 'Unknown'))];
-    return types.map(type => ({ value: type, label: type }));
-  };
+  const filteredColleges = allColleges.filter(college =>
+    college.toLowerCase().includes(collegeSearchTerm.toLowerCase())
+  );
 
   return (
-    <Card className="bg-card border-border shadow-sm text-card-foreground">
-      <CardHeader>
-        <CardTitle className="text-card-foreground">Course & College Selection</CardTitle>
+    <Card className="bg-card border-border shadow-sm">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl text-card-foreground flex items-center gap-2">
+          <GraduationCap className="h-6 w-6 text-primary" />
+          Your Preferences
+        </CardTitle>
         <CardDescription className="text-muted-foreground">
-          Select your preferences for finding the right colleges.
+          Select your preferred branches, college types, and locations. You can select multiple options or choose "All" for comprehensive results.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        
-        {/* Category and City Selection - Side by Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Category Selection */}
-          <Card className="bg-card border-border shadow-sm">
-            <CardContent className="p-4">
-              <Label className="text-sm font-medium text-card-foreground">Category *</Label>
-              <select
-                value={category}
-                onChange={(e) => onCategoryChange(e.target.value)}
-                className="flex h-10 w-full rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus:border-primary disabled:cursor-not-allowed disabled:opacity-50 mt-2"
-              >
-                <option value="">Select your category</option>
-                {availableCategories.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-              {!category && (
-                <p className="text-sm text-destructive mt-2">Please select your category</p>
-              )}
-            </CardContent>
-          </Card>
+        {/* Engineering Branches */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-base font-medium text-card-foreground">Engineering Branches</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleSelectAllBranches}
+              className="text-xs"
+            >
+              {preferredBranches.length === availableBranches.length ? 'Deselect All' : 'Select All Branches'}
+            </Button>
+          </div>
+          
+          {/* Branch Search */}
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search branches..."
+              value={branchSearchTerm}
+              onChange={(e) => setBranchSearchTerm(e.target.value)}
+              className="pl-8"
+            />
+          </div>
 
-          {/* City Selection */}
-          <Card className="bg-card border-border shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <Label className="text-sm font-medium text-card-foreground">
-                  Cities ({selectedCities.length} selected)
-                </Label>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => setShowCities(!showCities)}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  {showCities ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </Button>
-              </div>
-              
-              {showCities && (
-                <div className="border border-border rounded-lg p-3 max-h-48 overflow-y-auto bg-background">
-                  <div className="grid grid-cols-1 gap-2">
-                    {availableCities.map((city) => (
-                      <label key={city} className="flex items-center space-x-3 p-2 hover:bg-muted rounded cursor-pointer transition-colors">
-                        <input
-                          type="checkbox"
-                          checked={selectedCities.includes(city)}
-                          onChange={(e) => {
-                            const newSelectedCities = e.target.checked
-                              ? [...selectedCities, city]
-                              : selectedCities.filter(c => c !== city);
-                            onCityChange(newSelectedCities);
-                          }}
-                          className="w-4 h-4 accent-primary"
-                        />
-                        <span className="text-sm text-foreground flex-1">{city}</span>
-                        {selectedCities.includes(city) && (
-                          <Check className="w-4 h-4 text-primary" />
-                        )}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {selectedCities.length > 0 && (
-                <div className="flex gap-2 flex-wrap mt-3">
-                  {selectedCities.slice(0, 3).map((city) => (
-                    <Badge key={city} variant="secondary" className="text-xs">
-                      {city}
-                    </Badge>
-                  ))}
-                  {selectedCities.length > 3 && (
-                    <Badge variant="secondary" className="text-xs">
-                      +{selectedCities.length - 3} more
-                    </Badge>
-                  )}
-                </div>
-              )}
-              
-              {selectedCities.length === 0 && (
-                <p className="text-sm text-muted-foreground mt-2">No cities selected - all cities will be included</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Branch Selection */}
-        <Card className="bg-card border-border shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-3">
-              <Label className="text-sm font-medium text-card-foreground">
-                Branches * ({preferredBranches.length} selected)
-              </Label>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => setShowBranches(!showBranches)}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                {showBranches ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </Button>
-            </div>
-            
-            {showBranches && (
-              <div className="border border-border rounded-lg p-3 max-h-64 overflow-y-auto bg-background">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {availableBranches.map((branch) => (
-                    <label key={branch} className="flex items-center space-x-3 p-2 hover:bg-muted rounded cursor-pointer transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={preferredBranches.includes(branch)}
-                        onChange={(e) => onBranchChange(branch, e.target.checked)}
-                        className="w-4 h-4 accent-primary"
-                      />
-                      <span className="text-sm text-foreground flex-1">{branch}</span>
-                      {preferredBranches.includes(branch) && (
-                        <Check className="w-4 h-4 text-primary" />
-                      )}
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {preferredBranches.length > 0 && (
-              <div className="flex gap-2 flex-wrap mt-3">
-                {preferredBranches.slice(0, 3).map((branch) => (
-                  <Badge key={branch} variant="secondary" className="text-xs">
-                    {branch}
-                  </Badge>
-                ))}
-                {preferredBranches.length > 3 && (
-                  <Badge variant="secondary" className="text-xs">
-                    +{preferredBranches.length - 3} more
-                  </Badge>
-                )}
-              </div>
-            )}
-            
-            {preferredBranches.length === 0 && (
-              <p className="text-sm text-destructive mt-2">Please select at least one branch</p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* College Selection */}
-        <Card className="bg-card border-border shadow-sm">
-          <CardContent className="p-4">
-            <Label className="text-sm font-medium text-card-foreground">College Selection (Optional)</Label>
-            
-            <div className="border border-border rounded-lg p-3 mt-3 bg-background">
-              <label className="flex items-center space-x-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={useAllColleges}
-                  onChange={() => {
-                    setUseAllColleges(!useAllColleges);
-                    if (!useAllColleges) {
-                      onCollegeSelectionChange([]);
-                    }
-                  }}
-                  className="w-4 h-4 accent-primary"
-                />
-                <span className="text-sm text-foreground">Include all available colleges (recommended)</span>
-              </label>
-              
-              {!useAllColleges && (
-                <div className="mt-4 space-y-2">
-                  <Label className="text-xs text-muted-foreground">Or select specific colleges:</Label>
-                  <div className="max-h-32 overflow-y-auto space-y-1">
-                    {isLoading ? (
-                      <div className="text-center py-4">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mx-auto"></div>
-                        <p className="text-xs text-muted-foreground mt-2">Loading...</p>
-                      </div>
-                    ) : (
-                      availableColleges.map((college) => (
-                        <label key={college} className="flex items-center space-x-2 p-1 hover:bg-muted rounded cursor-pointer transition-colors">
-                          <input
-                            type="checkbox"
-                            checked={selectedColleges.includes(college)}
-                            onChange={(e) => {
-                              const newSelectedColleges = e.target.checked
-                                ? [...selectedColleges, college]
-                                : selectedColleges.filter(c => c !== college);
-                              onCollegeSelectionChange(newSelectedColleges);
-                            }}
-                            className="w-3 h-3 accent-primary"
-                          />
-                          <span className="text-xs text-foreground">{college}</span>
-                        </label>
-                      ))
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* College Type Filter - Now using database data */}
-        <Card className="bg-card border-border shadow-sm">
-          <CardContent className="p-4">
-            <Label className="text-sm font-medium text-card-foreground">College Type Filter (Optional)</Label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-              {availableCollegeTypes.map((type) => (
-                <label key={type} className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={collegeTypes.includes(type)}
-                    onChange={(e) => onCollegeTypeChange(type, e.target.checked)}
-                    className="w-4 h-4 accent-primary"
+          <ScrollArea className="h-32 w-full border rounded-md p-3">
+            <div className="grid grid-cols-1 gap-2">
+              {filteredBranches.map((branch) => (
+                <div key={branch} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`branch-${branch}`}
+                    checked={preferredBranches.includes(branch)}
+                    onCheckedChange={(checked) => onBranchChange(branch, checked as boolean)}
                   />
-                  <span className="text-sm text-foreground">{type}</span>
-                </label>
+                  <Label
+                    htmlFor={`branch-${branch}`}
+                    className="text-sm cursor-pointer flex-1"
+                  >
+                    {branch}
+                  </Label>
+                </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </ScrollArea>
+          
+          {preferredBranches.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {preferredBranches.slice(0, 3).map((branch) => (
+                <Badge key={branch} variant="secondary" className="text-xs">
+                  {branch.length > 20 ? branch.substring(0, 20) + '...' : branch}
+                  <X 
+                    className="ml-1 h-3 w-3 cursor-pointer" 
+                    onClick={() => onBranchChange(branch, false)}
+                  />
+                </Badge>
+              ))}
+              {preferredBranches.length > 3 && (
+                <Badge variant="outline" className="text-xs">
+                  +{preferredBranches.length - 3} more
+                </Badge>
+              )}
+            </div>
+          )}
+        </div>
+
+        <Separator />
+
+        {/* College Types */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-base font-medium text-card-foreground flex items-center gap-2">
+              <Building2 className="h-4 w-4" />
+              College Types
+            </Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleSelectAllCollegeTypes}
+              className="text-xs"
+            >
+              {collegeTypes.length === availableCollegeTypes.length ? 'Deselect All' : 'Select All Types'}
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 gap-2">
+            {collegeTypeOptions.map((type) => (
+              <div key={type.value} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`type-${type.value}`}
+                  checked={collegeTypes.includes(type.value)}
+                  onCheckedChange={(checked) => onCollegeTypeChange(type.value, checked as boolean)}
+                />
+                <Label
+                  htmlFor={`type-${type.value}`}
+                  className="text-sm cursor-pointer"
+                >
+                  {type.label}
+                </Label>
+              </div>
+            ))}
+          </div>
+
+          {collegeTypes.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {collegeTypes.map((type) => (
+                <Badge key={type} variant="secondary" className="text-xs">
+                  {type}
+                  <X 
+                    className="ml-1 h-3 w-3 cursor-pointer" 
+                    onClick={() => onCollegeTypeChange(type, false)}
+                  />
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <Separator />
+
+        {/* Cities Filter */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-base font-medium text-card-foreground flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
+              Preferred Cities (Optional)
+            </Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleSelectAllCities}
+              className="text-xs"
+            >
+              {selectedCities.length === availableCities.length ? 'Deselect All' : 'Select All Cities'}
+            </Button>
+          </div>
+          
+          <ScrollArea className="h-24 w-full border rounded-md p-3">
+            <div className="grid grid-cols-2 gap-2">
+              {availableCities.map((city) => (
+                <div key={city} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`city-${city}`}
+                    checked={selectedCities.includes(city)}
+                    onCheckedChange={() => handleCityToggle(city)}
+                  />
+                  <Label
+                    htmlFor={`city-${city}`}
+                    className="text-sm cursor-pointer"
+                  >
+                    {city}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+
+          {selectedCities.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {selectedCities.slice(0, 5).map((city) => (
+                <Badge key={city} variant="secondary" className="text-xs">
+                  {city}
+                  <X 
+                    className="ml-1 h-3 w-3 cursor-pointer" 
+                    onClick={() => handleCityToggle(city)}
+                  />
+                </Badge>
+              ))}
+              {selectedCities.length > 5 && (
+                <Badge variant="outline" className="text-xs">
+                  +{selectedCities.length - 5} more
+                </Badge>
+              )}
+            </div>
+          )}
+        </div>
+
+        <Separator />
+
+        {/* Specific Colleges */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-base font-medium text-card-foreground">
+              Specific Colleges (Optional)
+            </Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleSelectAllColleges}
+              className="text-xs"
+            >
+              {selectedColleges.length === allColleges.length ? 'Deselect All' : 'Select All Colleges'}
+            </Button>
+          </div>
+          
+          {/* College Search */}
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search colleges..."
+              value={collegeSearchTerm}
+              onChange={(e) => setCollegeSearchTerm(e.target.value)}
+              className="pl-8"
+            />
+          </div>
+
+          <ScrollArea className="h-32 w-full border rounded-md p-3">
+            <div className="grid grid-cols-1 gap-2">
+              {filteredColleges.slice(0, 50).map((college) => (
+                <div key={college} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`college-${college}`}
+                    checked={selectedColleges.includes(college)}
+                    onCheckedChange={() => handleCollegeToggle(college)}
+                  />
+                  <Label
+                    htmlFor={`college-${college}`}
+                    className="text-sm cursor-pointer flex-1"
+                  >
+                    {college}
+                  </Label>
+                </div>
+              ))}
+              {filteredColleges.length > 50 && (
+                <div className="text-xs text-muted-foreground p-2">
+                  Showing first 50 results. Use search to find specific colleges.
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+
+          {selectedColleges.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {selectedColleges.slice(0, 3).map((college) => (
+                <Badge key={college} variant="secondary" className="text-xs">
+                  {college.length > 25 ? college.substring(0, 25) + '...' : college}
+                  <X 
+                    className="ml-1 h-3 w-3 cursor-pointer" 
+                    onClick={() => handleCollegeToggle(college)}
+                  />
+                </Badge>
+              ))}
+              {selectedColleges.length > 3 && (
+                <Badge variant="outline" className="text-xs">
+                  +{selectedColleges.length - 3} more
+                </Badge>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Selection Summary */}
-        <Card className="bg-muted border-border">
-          <CardContent className="p-4">
-            <div className="text-sm text-foreground">
-              <strong>Selection Summary:</strong>
-              <ul className="mt-2 space-y-1 text-muted-foreground">
-                <li>Category: {category || 'Not selected'}</li>
-                <li>Cities: {selectedCities.length > 0 ? `${selectedCities.length} selected` : 'All cities included'}</li>
-                <li>Branches: {preferredBranches.length} selected</li>
-                <li>Colleges: {useAllColleges ? 'All included' : `${selectedColleges.length} selected`}</li>
-                <li>College Types: {collegeTypes.length > 0 ? `${collegeTypes.length} selected` : 'All types included'}</li>
-              </ul>
-            </div>
-            
-            {(!category || preferredBranches.length === 0) && (
-              <div className="mt-3 p-3 bg-destructive/10 border border-destructive/20 rounded text-destructive text-sm">
-                Please complete category and branch selections to proceed.
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <div className="bg-muted/50 p-3 rounded-lg text-sm">
+          <h4 className="font-medium mb-2">Selection Summary:</h4>
+          <div className="space-y-1 text-muted-foreground">
+            <p>• <strong>{preferredBranches.length}</strong> branches selected</p>
+            <p>• <strong>{collegeTypes.length}</strong> college types selected</p>
+            <p>• <strong>{selectedCities.length}</strong> cities selected {selectedCities.length === 0 && "(all cities will be shown)"}</p>
+            <p>• <strong>{selectedColleges.length}</strong> specific colleges selected {selectedColleges.length === 0 && "(all colleges will be searched)"}</p>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

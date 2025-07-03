@@ -109,7 +109,7 @@ const Index = () => {
       
       for (const branch of formData.preferredBranches) {
         const branchData = await fetchCutoffData(
-          formData.category,
+          formData.category === "ALL" ? undefined : formData.category, // Pass undefined for ALL category
           branch,
           formData.collegeTypes.length > 0 ? formData.collegeTypes : undefined,
           formData.selectedCities.length > 0 ? formData.selectedCities : undefined

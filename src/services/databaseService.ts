@@ -55,7 +55,8 @@ export const fetchCutoffData = async (
       .select('*')
       .order('cap1_cutoff', { ascending: true });
 
-    if (category) {
+    // Only filter by category if it's not "ALL"
+    if (category && category !== "ALL") {
       query = query.eq('category', category);
     }
 
@@ -104,7 +105,8 @@ export const fetchPaginatedCutoffs = async (
       .order('cap1_cutoff', { ascending: true })
       .range(offset, offset + limit - 1);
 
-    if (filters.category) {
+    // Only filter by category if it's not "ALL"
+    if (filters.category && filters.category !== "ALL") {
       query = query.eq('category', filters.category);
     }
 
