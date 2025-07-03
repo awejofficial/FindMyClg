@@ -93,13 +93,11 @@ export const FormDisplay: React.FC<FormDisplayProps> = ({
                   preferredBranches={formData.preferredBranches}
                   collegeTypes={formData.collegeTypes}
                   selectedColleges={formData.selectedColleges}
-                  collegeSelections={formData.collegeSelections}
                   category={formData.category}
                   selectedCities={formData.selectedCities}
                   onBranchChange={onBranchChange}
                   onCollegeTypeChange={onCollegeTypeChange}
                   onCollegeSelectionChange={(colleges) => onFormDataChange({ selectedColleges: colleges })}
-                  onCollegeSelectionsChange={(selections) => onFormDataChange({ collegeSelections: selections })}
                   onCategoryChange={(category) => onFormDataChange({ category })}
                   onCityChange={onCityChange}
                 />

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,13 +20,11 @@ interface MinimalPreferencesStepProps {
   preferredBranches: string[];
   collegeTypes: string[];
   selectedColleges: string[];
-  collegeSelections: Array<{ collegeName: string; selected: boolean }>;
   category: string;
   selectedCities: string[];
   onBranchChange: (branch: string, checked: boolean) => void;
   onCollegeTypeChange: (collegeType: string, checked: boolean) => void;
   onCollegeSelectionChange: (colleges: string[]) => void;
-  onCollegeSelectionsChange: (selections: Array<{ collegeName: string; selected: boolean }>) => void;
   onCategoryChange: (category: string) => void;
   onCityChange: (cities: string[]) => void;
 }
