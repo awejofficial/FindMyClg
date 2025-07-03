@@ -27,11 +27,12 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
 }) => {
   const isMobile = useIsMobile();
 
-  console.log('ResultsTableCore Debug:', {
+  console.log('ResultsTableCore render:', {
     currentResultsLength: currentResults.length,
     totalPages,
     currentPage,
-    filteredResultsLength
+    filteredResultsLength,
+    resultsPerPage
   });
 
   return (
@@ -56,13 +57,14 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
             <TableBody>
               {currentResults.length > 0 ? (
                 currentResults.map((college, index) => {
-                  const collegeKey = `${college.collegeName}-${college.branch}-${college.category}-${index}`;
+                  const globalIndex = ((currentPage - 1) * resultsPerPage) + index;
+                  const collegeKey = `${college.collegeName}-${college.branch}-${college.category}-${globalIndex}`;
                   
                   return (
                     <LazyResultsTableRow
                       key={collegeKey}
                       college={college}
-                      index={index}
+                      index={globalIndex}
                       studentAggregate={studentAggregate}
                     />
                   );

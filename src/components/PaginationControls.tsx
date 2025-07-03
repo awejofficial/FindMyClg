@@ -30,6 +30,14 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
   const startResult = (currentPage - 1) * resultsPerPage + 1;
   const endResult = Math.min(currentPage * resultsPerPage, totalResults);
 
+  console.log('PaginationControls render:', {
+    currentPage,
+    totalPages,
+    totalResults,
+    startResult,
+    endResult
+  });
+
   const getVisiblePages = () => {
     const delta = 2;
     const range = [];
@@ -60,8 +68,13 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
     return rangeWithDots;
   };
 
+  const handlePageClick = (page: number) => {
+    console.log('Pagination click:', page);
+    onPageChange(page);
+  };
+
   // Always show pagination controls when there are results, even if only 1 page
-  if (totalResults === 0) return null;
+  if (totalResults === 0 || totalPages === 0) return null;
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
@@ -77,9 +90,9 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  if (currentPage > 1) onPageChange(currentPage - 1);
+                  if (currentPage > 1) handlePageClick(currentPage - 1);
                 }}
-                className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
               />
             </PaginationItem>
 
@@ -92,9 +105,12 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
-                      onPageChange(page as number);
+                      if (typeof page === 'number') {
+                        handlePageClick(page);
+                      }
                     }}
                     isActive={currentPage === page}
+                    className="cursor-pointer"
                   >
                     {page}
                   </PaginationLink>
@@ -107,9 +123,9 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  if (currentPage < totalPages) onPageChange(currentPage + 1);
+                  if (currentPage < totalPages) handlePageClick(currentPage + 1);
                 }}
-                className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
               />
             </PaginationItem>
           </PaginationContent>

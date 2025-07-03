@@ -20,6 +20,16 @@ export const usePaginationLogic = (
     const endIndex = startIndex + resultsPerPage;
     const currentResults = filteredResults.slice(startIndex, endIndex);
 
+    console.log('Pagination Data:', {
+      totalResults: filteredResults.length,
+      currentPage,
+      totalPages,
+      startIndex,
+      endIndex,
+      currentResultsLength: currentResults.length,
+      resultsPerPage
+    });
+
     return {
       totalPages,
       startIndex,
@@ -29,15 +39,20 @@ export const usePaginationLogic = (
   }, [filteredResults, currentPage, resultsPerPage]);
 
   const handlePageChange = (page: number) => {
+    console.log('Page change requested:', page, 'of', paginationData.totalPages);
+    
     if (page >= 1 && page <= paginationData.totalPages) {
       setCurrentPage(page);
+      
       // Smooth scroll to top of results
-      const resultsElement = document.querySelector('[data-results-table]');
-      if (resultsElement) {
-        resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      setTimeout(() => {
+        const resultsElement = document.querySelector('[data-results-table]');
+        if (resultsElement) {
+          resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 100);
     }
   };
 
