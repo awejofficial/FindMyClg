@@ -10,12 +10,13 @@ export const usePaginationLogic = (
 
   // Reset to first page when filtered results change
   useEffect(() => {
+    console.log('Filtered results changed, resetting to page 1');
     setCurrentPage(1);
-  }, [filteredResults]);
+  }, [filteredResults.length]);
 
   // Memoize pagination calculations for performance
   const paginationData = useMemo(() => {
-    const totalPages = Math.ceil(filteredResults.length / resultsPerPage);
+    const totalPages = Math.max(1, Math.ceil(filteredResults.length / resultsPerPage));
     const startIndex = (currentPage - 1) * resultsPerPage;
     const endIndex = startIndex + resultsPerPage;
     const currentResults = filteredResults.slice(startIndex, endIndex);
@@ -41,7 +42,8 @@ export const usePaginationLogic = (
   const handlePageChange = (page: number) => {
     console.log('Page change requested:', page, 'of', paginationData.totalPages);
     
-    if (page >= 1 && page <= paginationData.totalPages) {
+    if (page >= 1 && page <= paginationData.totalPages && page !== currentPage) {
+      console.log('Setting current page to:', page);
       setCurrentPage(page);
       
       // Smooth scroll to top of results
@@ -53,6 +55,8 @@ export const usePaginationLogic = (
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }, 100);
+    } else {
+      console.log('Invalid page change request:', page);
     }
   };
 

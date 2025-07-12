@@ -70,7 +70,21 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
 
   const handlePageClick = (page: number) => {
     console.log('Pagination click:', page);
-    onPageChange(page);
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      onPageChange(page);
+    }
+  };
+
+  const handlePreviousClick = () => {
+    if (currentPage > 1) {
+      handlePageClick(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      handlePageClick(currentPage + 1);
+    }
   };
 
   // Always show pagination controls when there are results, even if only 1 page
@@ -86,14 +100,16 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
         <Pagination>
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious 
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage > 1) handlePageClick(currentPage - 1);
-                }}
-                className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePreviousClick}
+                disabled={currentPage === 1}
+                className="flex items-center gap-1"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </Button>
             </PaginationItem>
 
             {getVisiblePages().map((page, index) => (
@@ -101,32 +117,29 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
                 {page === '...' ? (
                   <PaginationEllipsis />
                 ) : (
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (typeof page === 'number') {
-                        handlePageClick(page);
-                      }
-                    }}
-                    isActive={currentPage === page}
-                    className="cursor-pointer"
+                  <Button
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handlePageClick(page as number)}
+                    className="min-w-[40px]"
                   >
                     {page}
-                  </PaginationLink>
+                  </Button>
                 )}
               </PaginationItem>
             ))}
 
             <PaginationItem>
-              <PaginationNext 
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage < totalPages) handlePageClick(currentPage + 1);
-                }}
-                className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleNextClick}
+                disabled={currentPage === totalPages}
+                className="flex items-center gap-1"
+              >
+                Next
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </PaginationItem>
           </PaginationContent>
         </Pagination>

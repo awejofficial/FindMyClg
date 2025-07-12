@@ -35,6 +35,11 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
     resultsPerPage
   });
 
+  const handlePageChangeWrapper = (page: number) => {
+    console.log('ResultsTableCore: Page change wrapper called with:', page);
+    onPageChange(page);
+  };
+
   return (
     <div className="bg-white rounded-lg border overflow-hidden" data-results-table>
       {/* Mobile: Horizontal scroll container */}
@@ -87,7 +92,7 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
           <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={onPageChange}
+            onPageChange={handlePageChangeWrapper}
             totalResults={filteredResultsLength}
             resultsPerPage={resultsPerPage}
           />
