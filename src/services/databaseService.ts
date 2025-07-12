@@ -33,6 +33,86 @@ export interface CollegeBranchInfo {
   branch_name: string;
 }
 
+export interface CollegeDetails {
+  id: string;
+  college_name: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  latitude?: number;
+  longitude?: number;
+  phone?: string;
+  email?: string;
+  website?: string;
+  established_year?: number;
+  college_code?: string;
+  naac_grade?: string;
+  nba_accredited?: boolean;
+  university_affiliation?: string;
+  campus_area_acres?: number;
+  total_students?: number;
+  faculty_count?: number;
+  hostel_available?: boolean;
+  hostel_capacity?: number;
+  library_books?: number;
+  computer_labs?: number;
+  placement_cell?: boolean;
+  transport_facility?: boolean;
+  wifi_campus?: boolean;
+  sports_facilities?: string[];
+  clubs_societies?: string[];
+  infrastructure_rating?: number;
+  placement_percentage?: number;
+  average_package?: number;
+  highest_package?: number;
+  top_recruiters?: string[];
+  research_centers?: string[];
+  notable_alumni?: string[];
+  created_at?: string;
+  updated_at?: string;
+  last_google_sync?: string;
+}
+
+export interface CollegeComparison {
+  college_name: string;
+  city: string;
+  college_type: string;
+  naac_grade: string;
+  establishment_year: number;
+  placement_percentage: number;
+  average_package: number;
+  highest_package: number;
+  infrastructure_rating: number;
+  hostel_available: boolean;
+  total_students: number;
+  cutoff_data: any[];
+  fee_data: any[];
+  facilities: any;
+}
+
+export interface UserAlert {
+  id: string;
+  user_id?: string;
+  college_name: string;
+  branch_name?: string;
+  category?: string;
+  alert_type?: string;
+  threshold_value?: number;
+  is_active?: boolean;
+  last_triggered?: string;
+  created_at?: string;
+}
+
+export interface NearbyCollege {
+  college_name: string;
+  city: string;
+  latitude: number;
+  longitude: number;
+  distance_km: number;
+  college_type: string;
+  naac_grade: string;
+}
+
 // Add UploadRecord interface for compatibility
 export interface UploadRecord {
   id: string;
@@ -350,6 +430,266 @@ export const fetchAvailableCities = async (): Promise<string[]> => {
     return cities.sort();
   } catch (error) {
     console.error('Failed to fetch cities:', error);
+    return [];
+  }
+};
+
+// NEW FEATURES FUNCTIONS
+
+// College Comparison Functions
+export const fetchCollegeComparison = async (collegeNames: string[]): Promise<CollegeComparison[]> => {
+  try {
+    const { data, error } = await supabase.rpc('get_college_comparison_data', {
+      college_names: collegeNames
+    });
+
+    if (error) {
+      console.error('Error fetching college comparison:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch college comparison:', error);
+    return [];
+  }
+};
+
+export const saveCollegeComparison = async (
+  collegeNames: string[],
+  userId?: string,
+  sessionId?: string
+): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('college_comparisons')
+      .insert([{
+        college_names: collegeNames,
+        user_id: userId,
+        session_id: sessionId,
+        comparison_criteria: {}
+      }]);
+
+    if (error) {
+      console.error('Error saving college comparison:', error);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Failed to save college comparison:', error);
+    return false;
+  }
+};
+
+// User Alerts Functions
+export const createUserAlert = async (alert: Omit<UserAlert, 'id'>): Promise<UserAlert | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('user_alerts')
+      .insert([alert])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating user alert:', error);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Failed to create user alert:', error);
+    return null;
+  }
+};
+
+export const fetchUserAlerts = async (userId?: string): Promise<UserAlert[]> => {
+  try {
+    let query = supabase
+      .from('user_alerts')
+      .select('*')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false });
+
+    if (userId) {
+      query = query.eq('user_id', userId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error fetching user alerts:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch user alerts:', error);
+    return [];
+  }
+};
+
+export const updateUserAlert = async (alertId: string, updates: Partial<UserAlert>): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('user_alerts')
+      .update(updates)
+      .eq('id', alertId);
+
+    if (error) {
+      console.error('Error updating user alert:', error);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Failed to update user alert:', error);
+    return false;
+  }
+};
+
+// College Details Functions
+export const fetchCollegeDetails = async (collegeName: string): Promise<CollegeDetails | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('college_details')
+      .select('*')
+      .eq('college_name', collegeName)
+      .single();
+
+    if (error) {
+      console.error('Error fetching college details:', error);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch college details:', error);
+    return null;
+  }
+};
+
+export const fetchAllCollegeDetails = async (): Promise<CollegeDetails[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('college_details')
+      .select('*')
+      .order('college_name', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching all college details:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch all college details:', error);
+    return [];
+  }
+};
+
+// Nearby Colleges Function
+export const fetchNearbyColleges = async (
+  latitude: number,
+  longitude: number,
+  radiusKm: number = 50
+): Promise<NearbyCollege[]> => {
+  try {
+    const { data, error } = await supabase.rpc('get_nearby_colleges', {
+      user_lat: latitude,
+      user_lng: longitude,
+      radius_km: radiusKm
+    });
+
+    if (error) {
+      console.error('Error fetching nearby colleges:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch nearby colleges:', error);
+    return [];
+  }
+};
+
+// Fee Structure Functions
+export const fetchFeeStructure = async (collegeName: string, branchName?: string): Promise<any[]> => {
+  try {
+    let query = supabase
+      .from('fee_structure')
+      .select('*')
+      .eq('college_name', collegeName)
+      .order('academic_year', { ascending: false });
+
+    if (branchName) {
+      query = query.eq('branch_name', branchName);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error fetching fee structure:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch fee structure:', error);
+    return [];
+  }
+};
+
+// Scholarships Functions
+export const fetchScholarships = async (collegeName?: string): Promise<any[]> => {
+  try {
+    let query = supabase
+      .from('scholarships')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (collegeName) {
+      query = query.or(`college_name.eq.${collegeName},college_name.is.null`);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error fetching scholarships:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch scholarships:', error);
+    return [];
+  }
+};
+
+// Cutoff History Functions
+export const fetchCutoffHistory = async (
+  collegeName: string,
+  branchName: string,
+  category: string
+): Promise<any[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('cutoff_history')
+      .select('*')
+      .eq('college_name', collegeName)
+      .eq('branch_name', branchName)
+      .eq('category', category)
+      .order('year', { ascending: false })
+      .order('round_number', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching cutoff history:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch cutoff history:', error);
     return [];
   }
 };

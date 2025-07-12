@@ -13,6 +13,9 @@ import AdminPanel from "./pages/AdminPanel";
 import Feedback from "./pages/Feedback";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import CollegeComparison from "./pages/CollegeComparison";
+import CollegeMap from "./pages/CollegeMap";
+import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +43,9 @@ const App: React.FC = () => {
                 <Route path="/admin-panel" element={<AdminPanel />} />
                 <Route path="/feedback" element={<Feedback />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/compare" element={<CollegeComparison />} />
+                <Route path="/map" element={<CollegeMap />} />
+                <Route path="/notifications" element={<Notifications />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
