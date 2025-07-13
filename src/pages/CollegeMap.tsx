@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,7 @@ import { Footer } from "@/components/Footer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { MapPin, Navigation, Phone, Mail, Globe, Users, GraduationCap, Star } from "lucide-react";
-import { databaseService } from "@/services/databaseService";
+import { fetchAllCollegeDetails } from "@/services/databaseService";
 
 interface College {
   college_name: string;
@@ -30,20 +31,51 @@ const CollegeMap: React.FC = () => {
   const [filteredColleges, setFilteredColleges] = useState<College[]>([]);
   const [selectedCollege, setSelectedCollege] = useState<College | null>(null);
 
-  const { data: colleges, isLoading, isError, error } = useQuery<College[]>('colleges', () => databaseService.getColleges());
+  const { data: collegeDetails, isLoading, isError, error } = useQuery({
+    queryKey: ['colleges'],
+    queryFn: fetchAllCollegeDetails,
+  });
 
   useEffect(() => {
-    if (colleges) {
-      setFilteredColleges(colleges);
+    if (collegeDetails) {
+      // Transform college details to match the College interface
+      const transformedColleges: College[] = collegeDetails.map(college => ({
+        college_name: college.college_name,
+        city: college.city || 'Unknown',
+        latitude: Number(college.latitude) || 0,
+        longitude: Number(college.longitude) || 0,
+        contact_number: college.phone || 'Not available',
+        email: college.email || 'Not available',
+        website: college.website || 'Not available',
+        student_count: college.total_students || 0,
+        establishment_year: college.established_year || 0,
+        type: 'Government', // This would come from cutoffs table join
+        rating: Number(college.infrastructure_rating) || 0,
+      }));
+      setFilteredColleges(transformedColleges);
     }
-  }, [colleges]);
+  }, [collegeDetails]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
 
-    if (colleges) {
-      const filtered = colleges.filter(college =>
+    if (collegeDetails) {
+      const transformedColleges: College[] = collegeDetails.map(college => ({
+        college_name: college.college_name,
+        city: college.city || 'Unknown',
+        latitude: Number(college.latitude) || 0,
+        longitude: Number(college.longitude) || 0,
+        contact_number: college.phone || 'Not available',
+        email: college.email || 'Not available',
+        website: college.website || 'Not available',
+        student_count: college.total_students || 0,
+        establishment_year: college.established_year || 0,
+        type: 'Government',
+        rating: Number(college.infrastructure_rating) || 0,
+      }));
+
+      const filtered = transformedColleges.filter(college =>
         college.college_name.toLowerCase().includes(query.toLowerCase()) ||
         college.city.toLowerCase().includes(query.toLowerCase())
       );
@@ -88,15 +120,18 @@ const CollegeMap: React.FC = () => {
                   value={searchQuery}
                   onChange={handleSearch}
                 />
-                <div className="mt-4 space-y-2">
+                <div className="mt-4 space-y-2 max-h-96 overflow-y-auto">
                   {filteredColleges.map((college) => (
                     <Button
                       key={college.college_name}
                       variant="ghost"
-                      className="w-full justify-start"
+                      className="w-full justify-start text-left h-auto p-3"
                       onClick={() => handleCollegeSelection(college)}
                     >
-                      {college.college_name}, {college.city}
+                      <div>
+                        <div className="font-medium">{college.college_name}</div>
+                        <div className="text-sm text-muted-foreground">{college.city}</div>
+                      </div>
                     </Button>
                   ))}
                 </div>
@@ -117,41 +152,53 @@ const CollegeMap: React.FC = () => {
                     <MapPin className="h-4 w-4" />
                     <span>{selectedCollege.city}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    <span>{selectedCollege.contact_number}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    <span>{selectedCollege.email}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Globe className="h-4 w-4" />
-                    <a href={selectedCollege.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      Website
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    <span>{selectedCollege.student_count} Students</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4" />
-                    <span>Established in {selectedCollege.establishment_year}</span>
-                  </div>
+                  {selectedCollege.contact_number !== 'Not available' && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4" />
+                      <span>{selectedCollege.contact_number}</span>
+                    </div>
+                  )}
+                  {selectedCollege.email !== 'Not available' && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      <span>{selectedCollege.email}</span>
+                    </div>
+                  )}
+                  {selectedCollege.website !== 'Not available' && (
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4" />
+                      <a href={selectedCollege.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                        Website
+                      </a>
+                    </div>
+                  )}
+                  {selectedCollege.student_count > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <span>{selectedCollege.student_count} Students</span>
+                    </div>
+                  )}
+                  {selectedCollege.establishment_year > 0 && (
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4" />
+                      <span>Established in {selectedCollege.establishment_year}</span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2">
                     <Badge>{selectedCollege.type}</Badge>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4" />
-                    <span>Rating: {selectedCollege.rating}</span>
-                  </div>
+                  {selectedCollege.rating > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Star className="h-4 w-4" />
+                      <span>Rating: {selectedCollege.rating}</span>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ) : (
               <Card>
-                <CardContent className="text-center">
-                  Select a college to view details.
+                <CardContent className="text-center py-8">
+                  <p className="text-muted-foreground">Select a college to view details.</p>
                 </CardContent>
               </Card>
             )}
