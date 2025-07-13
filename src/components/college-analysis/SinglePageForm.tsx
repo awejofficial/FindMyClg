@@ -7,6 +7,26 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { 
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { 
   Search, 
   MapPin, 
   Building2, 
@@ -17,7 +37,9 @@ import {
   Target,
   Star,
   Info,
-  ChevronRight
+  ChevronRight,
+  ChevronDown,
+  Plus
 } from "lucide-react";
 import { 
   fetchAvailableBranches, 
@@ -292,45 +314,80 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search branches..."
-                    value={branchSearch}
-                    onChange={(e) => setBranchSearch(e.target.value)}
-                    className="pl-10"
-                  />
+                <div className="space-y-2">
+                  <Label>Select Engineering Branches</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className="w-full justify-between h-auto min-h-[40px] text-left font-normal"
+                      >
+                        <div className="flex flex-wrap gap-1">
+                          {formData.preferredBranches.length === 0 ? (
+                            <span className="text-muted-foreground">Select branches...</span>
+                          ) : (
+                            <>
+                              {formData.preferredBranches.slice(0, 2).map((branch) => (
+                                <Badge key={branch} variant="secondary" className="text-xs">
+                                  {branch.length > 12 ? branch.substring(0, 12) + '...' : branch}
+                                </Badge>
+                              ))}
+                              {formData.preferredBranches.length > 2 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{formData.preferredBranches.length - 2} more
+                                </Badge>
+                              )}
+                            </>
+                          )}
+                        </div>
+                        <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Search branches..." />
+                        <CommandList>
+                          <CommandEmpty>No branches found.</CommandEmpty>
+                          <CommandGroup>
+                            {filteredBranches.map((branch) => (
+                              <CommandItem
+                                key={branch}
+                                value={branch}
+                                onSelect={() => handleBranchToggle(branch)}
+                                className="flex items-center gap-2 cursor-pointer"
+                              >
+                                <div className="flex h-4 w-4 items-center justify-center">
+                                  {formData.preferredBranches.includes(branch) && (
+                                    <Check className="h-4 w-4 text-primary" />
+                                  )}
+                                </div>
+                                <span className="flex-1">{branch}</span>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
-                
-                <ScrollArea className="h-32 border rounded-lg">
-                  <div className="p-3 space-y-2">
-                    {filteredBranches.map((branch) => (
-                      <div key={branch} className="flex items-center space-x-2 hover:bg-muted/50 p-1 rounded">
-                        <Checkbox
-                          checked={formData.preferredBranches.includes(branch)}
-                          onCheckedChange={() => handleBranchToggle(branch)}
-                        />
-                        <Label className="text-sm cursor-pointer flex-1">{branch}</Label>
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
 
                 {formData.preferredBranches.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {formData.preferredBranches.slice(0, 2).map((branch) => (
-                      <Badge key={branch} variant="secondary" className="text-xs">
-                        {branch.length > 15 ? branch.substring(0, 15) + '...' : branch}
-                        <button onClick={() => handleBranchToggle(branch)} className="ml-1">
-                          <X className="h-3 w-3" />
-                        </button>
-                      </Badge>
-                    ))}
-                    {formData.preferredBranches.length > 2 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{formData.preferredBranches.length - 2}
-                      </Badge>
-                    )}
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Selected Branches:</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.preferredBranches.map((branch) => (
+                        <Badge key={branch} variant="secondary" className="text-xs">
+                          {branch}
+                          <button 
+                            onClick={() => handleBranchToggle(branch)} 
+                            className="ml-2 hover:bg-secondary-foreground/20 rounded-full p-0.5"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 )}
               </CardContent>
