@@ -37,7 +37,7 @@ const CollegeMap: React.FC = () => {
   });
 
   useEffect(() => {
-    if (collegeDetails) {
+    if (collegeDetails && Array.isArray(collegeDetails)) {
       // Transform college details to match the College interface
       const transformedColleges: College[] = collegeDetails.map(college => ({
         college_name: college.college_name,
@@ -60,7 +60,7 @@ const CollegeMap: React.FC = () => {
     const query = event.target.value;
     setSearchQuery(query);
 
-    if (collegeDetails) {
+    if (collegeDetails && Array.isArray(collegeDetails)) {
       const transformedColleges: College[] = collegeDetails.map(college => ({
         college_name: college.college_name,
         city: college.city || 'Unknown',
