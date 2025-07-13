@@ -87,7 +87,14 @@ export interface CollegeComparison {
   total_students: number;
   cutoff_data: any[];
   fee_data: any[];
-  facilities: any;
+  facilities: {
+    wifi_campus: boolean;
+    transport_facility: boolean;
+    library_books: number;
+    computer_labs: number;
+    sports_facilities: string[];
+    research_centers: string[];
+  };
 }
 
 export interface UserAlert {
@@ -438,21 +445,39 @@ export const fetchAvailableCities = async (): Promise<string[]> => {
 
 // College Comparison Functions
 export const fetchCollegeComparison = async (collegeNames: string[]): Promise<CollegeComparison[]> => {
-  try {
-    const { data, error } = await supabase.rpc('get_college_comparison_data', {
-      college_names: collegeNames
-    });
+  const { data, error } = await supabase.rpc('get_college_comparison_data', {
+    college_names: collegeNames
+  });
 
-    if (error) {
-      console.error('Error fetching college comparison:', error);
-      return [];
-    }
-
-    return data || [];
-  } catch (error) {
-    console.error('Failed to fetch college comparison:', error);
-    return [];
+  if (error) {
+    console.error('Error fetching college comparison:', error);
+    throw error;
   }
+
+  // Transform the data to match our interface
+  return data.map((item: any) => ({
+    college_name: item.college_name,
+    city: item.city,
+    college_type: item.college_type,
+    naac_grade: item.naac_grade,
+    establishment_year: item.establishment_year,
+    placement_percentage: item.placement_percentage,
+    average_package: item.average_package,
+    highest_package: item.highest_package,
+    infrastructure_rating: item.infrastructure_rating,
+    hostel_available: item.hostel_available,
+    total_students: item.total_students,
+    cutoff_data: Array.isArray(item.cutoff_data) ? item.cutoff_data : [],
+    fee_data: Array.isArray(item.fee_data) ? item.fee_data : [],
+    facilities: typeof item.facilities === 'object' ? item.facilities : {
+      wifi_campus: false,
+      transport_facility: false,
+      library_books: 0,
+      computer_labs: 0,
+      sports_facilities: [],
+      research_centers: []
+    }
+  }));
 };
 
 export const saveCollegeComparison = async (
