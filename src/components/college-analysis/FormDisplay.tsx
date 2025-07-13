@@ -3,12 +3,7 @@ import React from 'react';
 import { GraduationCap } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { 
-  PersonalInfoStep,
-  AcademicDetailsStep,
-  FormStepper
-} from "@/components/form-steps";
-import { MinimalPreferencesStep } from "@/components/form-steps/MinimalPreferencesStep";
+import { SinglePageForm } from "./SinglePageForm";
 import { RulesInfoSection } from "./RulesInfoSection";
 import { FormData } from "./FormDataTypes";
 
@@ -69,49 +64,13 @@ export const FormDisplay: React.FC<FormDisplayProps> = ({
             </div>
           </div>
 
-          {(isGuest || currentStep > 1) && (
-            <>
-              {(currentStep === 1 && isGuest) && (
-                <PersonalInfoStep
-                  fullName={formData.fullName}
-                  onFullNameChange={(value) => onFormDataChange({ fullName: value })}
-                />
-              )}
-
-              {currentStep === 2 && (
-                <AcademicDetailsStep
-                  aggregate={formData.aggregate}
-                  category={formData.category}
-                  availableCategories={availableCategories}
-                  onAggregateChange={(value) => onFormDataChange({ aggregate: value })}
-                  onCategoryChange={(value) => onFormDataChange({ category: value })}
-                />
-              )}
-
-              {currentStep === 3 && (
-                <MinimalPreferencesStep
-                  preferredBranches={formData.preferredBranches}
-                  collegeTypes={formData.collegeTypes}
-                  selectedColleges={formData.selectedColleges}
-                  category={formData.category}
-                  selectedCities={formData.selectedCities}
-                  onBranchChange={onBranchChange}
-                  onCollegeTypeChange={onCollegeTypeChange}
-                  onCollegeSelectionChange={(colleges) => onFormDataChange({ selectedColleges: colleges })}
-                  onCategoryChange={(category) => onFormDataChange({ category })}
-                  onCityChange={onCityChange}
-                />
-              )}
-
-              <FormStepper
-                currentStep={currentStep}
-                isAnalyzing={isAnalyzing}
-                onNext={onNext}
-                onPrev={onPrev}
-                onSubmit={onSubmit}
-              />
-            </>
-          )}
+          <SinglePageForm
+            formData={formData}
+            availableCategories={availableCategories}
+            isAnalyzing={isAnalyzing}
+            onFormDataChange={onFormDataChange}
+            onSubmit={onSubmit}
+          />
         </div>
         
         {/* Rules and Information Section */}
