@@ -5,7 +5,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import { PageTitle } from "@/components/PageTitle";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
@@ -14,9 +13,6 @@ import AdminPanel from "./pages/AdminPanel";
 import Feedback from "./pages/Feedback";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
-import CollegeComparison from "./pages/CollegeComparison";
-import CollegeMap from "./pages/CollegeMap";
-import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,31 +26,26 @@ const queryClient = new QueryClient({
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <PageTitle />
-            <div className="min-h-screen bg-background">
-              <main>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/admin-auth" element={<AdminAuth />} />
-                  <Route path="/admin-panel" element={<AdminPanel />} />
-                  <Route path="/feedback" element={<Feedback />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/compare" element={<CollegeComparison />} />
-                  <Route path="/map" element={<CollegeMap />} />
-                  <Route path="/notifications" element={<Notifications />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <PageTitle />
+          <div className="min-h-screen bg-background">
+            <main>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin-auth" element={<AdminAuth />} />
+                <Route path="/admin-panel" element={<AdminPanel />} />
+                <Route path="/feedback" element={<Feedback />} />
+                <Route path="/about" element={<About />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };
