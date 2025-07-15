@@ -2,15 +2,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 
 interface PaginationControlsProps {
   currentPage: number;
@@ -87,62 +78,62 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
     }
   };
 
-  // Always show pagination controls when there are results, even if only 1 page
-  if (totalResults === 0 || totalPages === 0) return null;
+  // Always show pagination controls when there are results
+  if (totalResults === 0) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
-      <div className="text-sm text-gray-600">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 p-4 bg-white border-t border-gray-200">
+      <div className="text-sm text-gray-600 font-medium">
         Showing {startResult}-{endResult} of {totalResults} results
       </div>
       
       {totalPages > 1 && (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handlePreviousClick}
-                disabled={currentPage === 1}
-                className="flex items-center gap-1"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                Previous
-              </Button>
-            </PaginationItem>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handlePreviousClick}
+            disabled={currentPage === 1}
+            className="flex items-center gap-1 bg-white hover:bg-gray-50 border-gray-300"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Previous
+          </Button>
 
+          <div className="flex items-center gap-1">
             {getVisiblePages().map((page, index) => (
-              <PaginationItem key={index}>
+              <React.Fragment key={index}>
                 {page === '...' ? (
-                  <PaginationEllipsis />
+                  <span className="px-2 py-1 text-gray-500">...</span>
                 ) : (
                   <Button
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
                     onClick={() => handlePageClick(page as number)}
-                    className="min-w-[40px]"
+                    className={`min-w-[40px] ${
+                      currentPage === page 
+                        ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                        : 'bg-white hover:bg-gray-50 border-gray-300'
+                    }`}
                   >
                     {page}
                   </Button>
                 )}
-              </PaginationItem>
+              </React.Fragment>
             ))}
+          </div>
 
-            <PaginationItem>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleNextClick}
-                disabled={currentPage === totalPages}
-                className="flex items-center gap-1"
-              >
-                Next
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleNextClick}
+            disabled={currentPage === totalPages}
+            className="flex items-center gap-1 bg-white hover:bg-gray-50 border-gray-300"
+          >
+            Next
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       )}
     </div>
   );

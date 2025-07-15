@@ -1,10 +1,18 @@
 
+export interface FormData {
+  fullName: string;
+  aggregate: string;
+  category: string | string[]; // Updated to support multiple categories
+  preferredBranches: string[];
+  collegeTypes: string[];
+  selectedColleges: string[];
+  collegeSelections: CollegeSelection[];
+  selectedCities: string[];
+}
+
 export interface CollegeSelection {
   collegeName: string;
-  collegeType: string;
-  selectedBranches: string[];
-  availableBranches: string[];
-  expanded: boolean;
+  branches: string[];
 }
 
 export interface CollegeMatch {
@@ -19,18 +27,13 @@ export interface CollegeMatch {
   eligible: boolean;
 }
 
-export interface FormData {
-  fullName: string;
-  aggregate: string;
-  category: string;
-  preferredBranches: string[];
-  collegeTypes: string[];
-  selectedColleges: string[];
-  collegeSelections: CollegeSelection[];
-  selectedCities: string[];
-}
-
 export interface CollegeType {
   value: string;
   label: string;
+}
+
+export interface EligibilityResult {
+  eligible: boolean;
+  bestCutoff: number | null;
+  cutoffType: string | null;
 }

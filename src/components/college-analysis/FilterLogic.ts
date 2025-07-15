@@ -19,6 +19,8 @@ export const useFilterLogic = (results: CollegeMatch[]) => {
     searchTerm: ''
   });
 
+  const [sortBy, setSortBy] = useState<string>('eligible');
+
   // Get unique filter options
   const uniqueCities = [...new Set(results.map(r => r.city))].sort();
   const uniqueBranches = [...new Set(results.map(r => r.branch))].sort();
@@ -42,17 +44,48 @@ export const useFilterLogic = (results: CollegeMatch[]) => {
       return true;
     })
     .sort((a, b) => {
-      // Sort by eligibility first, then by best cutoff
-      if (a.eligible && !b.eligible) return -1;
-      if (!a.eligible && b.eligible) return 1;
-      
-      const getCutoff = (college: CollegeMatch) => {
-        const cutoffs = [college.cap1Cutoff, college.cap2Cutoff, college.cap3Cutoff]
-          .filter(c => c !== null) as number[];
-        return cutoffs.length > 0 ? Math.min(...cutoffs) : 100;
-      };
-      
-      return getCutoff(a) - getCutoff(b);
+      switch (sortBy) {
+        case 'eligible':
+          // Sort by eligibility first, then by best cutoff
+          if (a.eligible && !b.eligible) return -1;
+          if (!a.eligible && b.eligible) return 1;
+          
+          const getCutoff = (college: CollegeMatch) => {
+            const cutoffs = [college.cap1Cutoff, college.cap2Cutoff, college.cap3Cutoff]
+              .filter(c => c !== null) as number[];
+            return cutoffs.length > 0 ? Math.min(...cutoffs) : 100;
+          };
+          
+          return getCutoff(a) - getCutoff(b);
+          
+        case 'cutoff-asc':
+          const getCutoffA = (college: CollegeMatch) => {
+            const cutoffs = [college.cap1Cutoff, college.cap2Cutoff, college.cap3Cutoff]
+              .filter(c => c !== null) as number[];
+            return cutoffs.length > 0 ? Math.min(...cutoffs) : 100;
+          };
+          return getCutoffA(a) - getCutoffA(b);
+          
+        case 'cutoff-desc':
+          const getCutoffB = (college: CollegeMatch) => {
+            const cutoffs = [college.cap1Cutoff, college.cap2Cutoff, college.cap3Cutoff]
+              .filter(c => c !== null) as number[];
+            return cutoffs.length > 0 ? Math.min(...cutoffs) : 0;
+          };
+          return getCutoffB(b) - getCutoffB(a);
+          
+        case 'name-asc':
+          return a.collegeName.localeCompare(b.collegeName);
+          
+        case 'name-desc':
+          return b.collegeName.localeCompare(a.collegeName);
+          
+        case 'city-asc':
+          return a.city.localeCompare(b.city);
+          
+        default:
+          return 0;
+      }
     });
 
   const toggleFilter = (type: keyof FilterState, value: string | boolean) => {
@@ -79,6 +112,10 @@ export const useFilterLogic = (results: CollegeMatch[]) => {
     setFilters(prev => ({ ...prev, searchTerm }));
   };
 
+  const handleSortChange = (newSortBy: string) => {
+    setSortBy(newSortBy);
+  };
+
   const clearFilters = () => {
     setFilters({ cities: [], branches: [], categories: [], eligibleOnly: false, searchTerm: '' });
   };
@@ -92,8 +129,10 @@ export const useFilterLogic = (results: CollegeMatch[]) => {
     uniqueBranches,
     uniqueCategories,
     eligibleCount,
+    sortBy,
     toggleFilter,
     handleSearchChange,
+    handleSortChange,
     clearFilters
   };
 };

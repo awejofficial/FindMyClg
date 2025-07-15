@@ -33,8 +33,10 @@ export const TNEAStyleResultsTable: React.FC<TNEAStyleResultsTableProps> = ({
     uniqueBranches,
     uniqueCategories,
     eligibleCount,
+    sortBy,
     toggleFilter,
     handleSearchChange,
+    handleSortChange,
     clearFilters
   } = useFilterLogic(results);
 
@@ -92,6 +94,8 @@ export const TNEAStyleResultsTable: React.FC<TNEAStyleResultsTableProps> = ({
         onToggleFilter={toggleFilter}
         onClearFilters={clearFilters}
         onSearchChange={handleSearchChange}
+        onSortChange={handleSortChange}
+        currentSort={sortBy}
       />
 
       {/* Results Table */}
