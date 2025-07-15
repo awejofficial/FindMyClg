@@ -53,11 +53,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       {/* Compact Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-3">
         <div className="flex items-center gap-3">
-          <img 
-            src="/lovable-uploads/214526ee-d1c4-40fc-b3b1-0b58d7e80662.png" 
-            alt="FindMyClg Logo" 
-            className="w-10 h-10 object-contain"
-          />
           <div>
             <h2 className="text-lg font-semibold text-gray-900">
               Results for {studentName}

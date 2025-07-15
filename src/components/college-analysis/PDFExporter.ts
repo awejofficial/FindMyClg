@@ -13,7 +13,7 @@ export const exportToPDF = async (
   try {
     const logoImg = new Image();
     logoImg.crossOrigin = 'anonymous';
-    logoImg.src = '/lovable-uploads/214526ee-d1c4-40fc-b3b1-0b58d7e80662.png';
+    logoImg.src = '/lovable-uploads/0b03c0c9-e954-4cec-82c9-48e194652cf3.png';
     
     logoImg.onload = () => {
       // Header background
@@ -180,13 +180,26 @@ export const exportToPDF = async (
         doc.setTextColor(247, 68, 78);
         doc.text('findmyclg.com', 170, 292);
         
-        // Add social links
+        // Add social links with clickable functionality
         doc.setTextColor(107, 114, 128);
         doc.text('Follow us:', 20, 297);
         doc.setTextColor(247, 68, 78);
-        doc.text('Facebook: fb.com/findmyclg', 45, 297);
-        doc.text('Instagram: @findmyclg', 120, 297);
-        doc.text('LinkedIn: linkedin.com/company/findmyclg', 20, 302);
+        
+        // Facebook link
+        doc.textWithLink('Facebook: fb.com/findmyclg', 45, 297, { url: 'https://www.facebook.com/findmyclg' });
+        
+        // Instagram link  
+        doc.textWithLink('Instagram: @findmyclg', 120, 297, { url: 'https://www.instagram.com/findmyclg' });
+        
+        // LinkedIn link
+        doc.textWithLink('LinkedIn: linkedin.com/company/findmyclg', 20, 302, { url: 'https://www.linkedin.com/company/findmyclg' });
+        
+        // Add more social media icons and links
+        doc.setTextColor(107, 114, 128);
+        doc.text('More:', 20, 307);
+        doc.setTextColor(247, 68, 78);
+        doc.textWithLink('YouTube: youtube.com/@findmyclg', 45, 307, { url: 'https://www.youtube.com/@findmyclg' });
+        doc.textWithLink('Twitter: twitter.com/findmyclg', 120, 307, { url: 'https://www.twitter.com/findmyclg' });
       }
       
       // Add legend page if there are results

@@ -344,18 +344,18 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
                         <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-full p-0" align="start">
-                      <Command>
-                        <CommandInput placeholder="Search branches..." />
-                        <CommandList>
-                          <CommandEmpty>No branches found.</CommandEmpty>
-                          <CommandGroup>
+                    <PopoverContent className="w-full p-0 bg-white border-border shadow-md" align="start">
+                      <Command className="bg-white">
+                        <CommandInput placeholder="Search branches..." className="bg-white" />
+                        <CommandList className="bg-white">
+                          <CommandEmpty className="bg-white">No branches found.</CommandEmpty>
+                          <CommandGroup className="bg-white">
                             {filteredBranches.map((branch) => (
                               <CommandItem
                                 key={branch}
                                 value={branch}
                                 onSelect={() => handleBranchToggle(branch)}
-                                className="flex items-center gap-2 cursor-pointer"
+                                className="flex items-center gap-2 cursor-pointer bg-white hover:bg-gray-50"
                               >
                                 <div className="flex h-4 w-4 items-center justify-center">
                                   {formData.preferredBranches.includes(branch) && (
