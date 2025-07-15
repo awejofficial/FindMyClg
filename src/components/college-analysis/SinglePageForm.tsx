@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 
 interface SinglePageFormProps {
   formData: FormData;
+  availableCategories: string[];
   onFormDataChange: (updates: Partial<FormData>) => void;
   onBranchChange: (branch: string, checked: boolean) => void;
   onCollegeTypeChange: (collegeType: string, checked: boolean) => void;
@@ -24,6 +26,7 @@ interface SinglePageFormProps {
 
 export const SinglePageForm: React.FC<SinglePageFormProps> = ({
   formData,
+  availableCategories,
   onFormDataChange,
   onBranchChange,
   onCollegeTypeChange,
@@ -34,7 +37,6 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
   onGuestAccess
 }) => {
   const [availableBranches, setAvailableBranches] = useState<string[]>([]);
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [filteredBranches, setFilteredBranches] = useState<string[]>([]);
   const [branchSearchTerm, setBranchSearchTerm] = useState('');
   const [isBranchPopoverOpen, setIsBranchPopoverOpen] = useState(false);
@@ -43,12 +45,8 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [branches, categories] = await Promise.all([
-          fetchAvailableBranches(),
-          fetchAvailableCategories()
-        ]);
+        const branches = await fetchAvailableBranches();
         setAvailableBranches(branches);
-        setAvailableCategories(categories);
         setFilteredBranches(branches);
       } catch (error) {
         console.error('Failed to load data:', error);

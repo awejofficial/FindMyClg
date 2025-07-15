@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { toast } from "@/hooks/use-toast";
 import { 
@@ -104,17 +105,35 @@ const Index = () => {
       console.log('Selected cities:', formData.selectedCities);
       console.log('Colleges to search:', collegesToSearch.length);
       
-      // Fetch data for all selected branches
+      // Handle category - convert to array if it's a string, or use the array directly
+      const categoryArray = Array.isArray(formData.category) ? formData.category : 
+                            formData.category ? [formData.category] : [];
+      
+      // Fetch data for all selected branches and categories
       const allCutoffData: CutoffRecord[] = [];
       
       for (const branch of formData.preferredBranches) {
-        const branchData = await fetchCutoffData(
-          formData.category === "ALL" ? undefined : formData.category, // Pass undefined for ALL category
-          branch,
-          formData.collegeTypes.length > 0 ? formData.collegeTypes : undefined,
-          formData.selectedCities.length > 0 ? formData.selectedCities : undefined
-        );
-        allCutoffData.push(...branchData);
+        // If no categories selected or "ALL" is selected, fetch all categories
+        if (categoryArray.length === 0 || categoryArray.includes("ALL")) {
+          const branchData = await fetchCutoffData(
+            undefined, // undefined for all categories
+            branch,
+            formData.collegeTypes.length > 0 ? formData.collegeTypes : undefined,
+            formData.selectedCities.length > 0 ? formData.selectedCities : undefined
+          );
+          allCutoffData.push(...branchData);
+        } else {
+          // Fetch data for each selected category
+          for (const category of categoryArray) {
+            const branchData = await fetchCutoffData(
+              category,
+              branch,
+              formData.collegeTypes.length > 0 ? formData.collegeTypes : undefined,
+              formData.selectedCities.length > 0 ? formData.selectedCities : undefined
+            );
+            allCutoffData.push(...branchData);
+          }
+        }
       }
 
       console.log('Total cutoff records found:', allCutoffData.length);

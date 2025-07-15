@@ -17,7 +17,11 @@ export const validateForm = (formData: FormData) => {
     }
   }
   
-  if (!formData.category) {
+  // Handle category validation for both string and array types
+  const categoryArray = Array.isArray(formData.category) ? formData.category : 
+                        formData.category ? [formData.category] : [];
+  
+  if (categoryArray.length === 0) {
     errors.push("Category selection is required");
   }
   
@@ -38,7 +42,12 @@ export const validateStep = (currentStep: number, formData: FormData, isGuest: b
     if (!formData.aggregate || isNaN(parseFloat(formData.aggregate))) {
       errors.push("Valid aggregate percentage is required");
     }
-    if (!formData.category) {
+    
+    // Handle category validation for both string and array types
+    const categoryArray = Array.isArray(formData.category) ? formData.category : 
+                          formData.category ? [formData.category] : [];
+    
+    if (categoryArray.length === 0) {
       errors.push("Category selection is required");
     }
     
