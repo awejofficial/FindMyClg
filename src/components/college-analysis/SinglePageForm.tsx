@@ -7,7 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X, ChevronDown, Check, User } from "lucide-react";
 import { FormData } from "./FormDataTypes";
-import { fetchAvailableBranches, fetchAvailableCategories } from "@/services/databaseService";
+import { 
+  fetchAvailableBranches, 
+  fetchAvailableCategories, 
+  fetchAvailableCollegeTypes, 
+  fetchAvailableCities 
+} from "@/services/databaseService";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
@@ -37,16 +42,27 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
   onGuestAccess
 }) => {
   const [availableBranches, setAvailableBranches] = useState<string[]>([]);
+  const [availableCollegeTypes, setAvailableCollegeTypes] = useState<string[]>([]);
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
   const [filteredBranches, setFilteredBranches] = useState<string[]>([]);
   const [branchSearchTerm, setBranchSearchTerm] = useState('');
   const [isBranchPopoverOpen, setIsBranchPopoverOpen] = useState(false);
   const [isCategoryPopoverOpen, setIsCategoryPopoverOpen] = useState(false);
+  const [isCollegeTypePopoverOpen, setIsCollegeTypePopoverOpen] = useState(false);
+  const [isCityPopoverOpen, setIsCityPopoverOpen] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const branches = await fetchAvailableBranches();
+        const [branches, collegeTypes, cities] = await Promise.all([
+          fetchAvailableBranches(),
+          fetchAvailableCollegeTypes(),
+          fetchAvailableCities()
+        ]);
+        
         setAvailableBranches(branches);
+        setAvailableCollegeTypes(collegeTypes);
+        setAvailableCities(cities);
         setFilteredBranches(branches);
       } catch (error) {
         console.error('Failed to load data:', error);
@@ -82,6 +98,17 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
     }
   };
 
+  const handleCollegeTypeToggle = (collegeType: string) => {
+    onCollegeTypeChange(collegeType, !formData.collegeTypes.includes(collegeType));
+  };
+
+  const handleCityToggle = (city: string) => {
+    const updatedCities = formData.selectedCities.includes(city)
+      ? formData.selectedCities.filter(c => c !== city)
+      : [...formData.selectedCities, city];
+    onCityChange(updatedCities);
+  };
+
   const removeBranch = (branch: string) => {
     onBranchChange(branch, false);
   };
@@ -91,6 +118,15 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
                              formData.category ? [formData.category] : [];
     const newCategories = currentCategories.filter(c => c !== category);
     onFormDataChange({ category: newCategories.length === 1 ? newCategories[0] : newCategories });
+  };
+
+  const removeCollegeType = (collegeType: string) => {
+    onCollegeTypeChange(collegeType, false);
+  };
+
+  const removeCity = (city: string) => {
+    const updatedCities = formData.selectedCities.filter(c => c !== city);
+    onCityChange(updatedCities);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -303,36 +339,63 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
                 <Label className="text-base font-medium text-gray-700 mb-3 block">
                   College Types
                 </Label>
-                <div className="flex flex-wrap gap-3">
-                  {/* Example College Types */}
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={formData.collegeTypes.includes('Government')}
-                      onChange={(e) => onCollegeTypeChange('Government', e.target.checked)}
-                    />
-                    <span className="text-gray-700">Government</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={formData.collegeTypes.includes('Government Autonomous')}
-                      onChange={(e) => onCollegeTypeChange('Government Autonomous', e.target.checked)}
-                    />
-                    <span className="text-gray-700">Government Autonomous</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={formData.collegeTypes.includes('Private')}
-                      onChange={(e) => onCollegeTypeChange('Private', e.target.checked)}
-                    />
-                    <span className="text-gray-700">Private</span>
-                  </label>
-                </div>
+                <Popover open={isCollegeTypePopoverOpen} onOpenChange={setIsCollegeTypePopoverOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={isCollegeTypePopoverOpen}
+                      className="w-full justify-between h-12 text-base bg-white border-gray-300 hover:border-blue-500 focus:border-blue-500 focus:ring-blue-500"
+                    >
+                      {formData.collegeTypes.length === 0 ? "Select college types..." : 
+                       `${formData.collegeTypes.length} type${formData.collegeTypes.length > 1 ? 's' : ''} selected`}
+                      <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0 bg-white border border-gray-200 shadow-lg z-50" align="start">
+                    <Command className="bg-white">
+                      <CommandInput placeholder="Search college types..." className="bg-white border-none" />
+                      <CommandList className="bg-white max-h-60 overflow-y-auto">
+                        <CommandEmpty className="bg-white p-4 text-gray-500">No college types found.</CommandEmpty>
+                        <CommandGroup className="bg-white">
+                          {availableCollegeTypes.map((collegeType) => (
+                            <CommandItem
+                              key={collegeType}
+                              value={collegeType}
+                              onSelect={() => handleCollegeTypeToggle(collegeType)}
+                              className="flex items-center gap-2 cursor-pointer bg-white hover:bg-gray-50 p-3 border-b border-gray-100"
+                            >
+                              <div className="flex h-4 w-4 items-center justify-center">
+                                {formData.collegeTypes.includes(collegeType) && (
+                                  <Check className="h-4 w-4 text-blue-600" />
+                                )}
+                              </div>
+                              <span className="text-gray-700">{collegeType}</span>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+
+                {/* Selected College Types */}
+                {formData.collegeTypes.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {formData.collegeTypes.map((collegeType) => (
+                      <Badge key={collegeType} variant="secondary" className="px-3 py-1">
+                        {collegeType}
+                        <button
+                          type="button"
+                          onClick={() => removeCollegeType(collegeType)}
+                          className="ml-2 hover:bg-gray-200 rounded-full p-1"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* City Selection */}
@@ -340,57 +403,63 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
                 <Label className="text-base font-medium text-gray-700 mb-3 block">
                   Preferred Cities
                 </Label>
-                <div className="flex flex-wrap gap-3">
-                  {/* Example Cities */}
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={formData.selectedCities.includes('Mumbai')}
-                      onChange={(e) => {
-                        const city = 'Mumbai';
-                        const isChecked = e.target.checked;
-                        const updatedCities = isChecked
-                          ? [...formData.selectedCities, city]
-                          : formData.selectedCities.filter((c) => c !== city);
-                        onCityChange(updatedCities);
-                      }}
-                    />
-                    <span className="text-gray-700">Mumbai</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={formData.selectedCities.includes('Pune')}
-                      onChange={(e) => {
-                        const city = 'Pune';
-                        const isChecked = e.target.checked;
-                        const updatedCities = isChecked
-                          ? [...formData.selectedCities, city]
-                          : formData.selectedCities.filter((c) => c !== city);
-                        onCityChange(updatedCities);
-                      }}
-                    />
-                    <span className="text-gray-700">Pune</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={formData.selectedCities.includes('Nagpur')}
-                      onChange={(e) => {
-                        const city = 'Nagpur';
-                        const isChecked = e.target.checked;
-                        const updatedCities = isChecked
-                          ? [...formData.selectedCities, city]
-                          : formData.selectedCities.filter((c) => c !== city);
-                        onCityChange(updatedCities);
-                      }}
-                    />
-                    <span className="text-gray-700">Nagpur</span>
-                  </label>
-                </div>
+                <Popover open={isCityPopoverOpen} onOpenChange={setIsCityPopoverOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={isCityPopoverOpen}
+                      className="w-full justify-between h-12 text-base bg-white border-gray-300 hover:border-blue-500 focus:border-blue-500 focus:ring-blue-500"
+                    >
+                      {formData.selectedCities.length === 0 ? "Select cities..." : 
+                       `${formData.selectedCities.length} city${formData.selectedCities.length > 1 ? 'ies' : ''} selected`}
+                      <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0 bg-white border border-gray-200 shadow-lg z-50" align="start">
+                    <Command className="bg-white">
+                      <CommandInput placeholder="Search cities..." className="bg-white border-none" />
+                      <CommandList className="bg-white max-h-60 overflow-y-auto">
+                        <CommandEmpty className="bg-white p-4 text-gray-500">No cities found.</CommandEmpty>
+                        <CommandGroup className="bg-white">
+                          {availableCities.map((city) => (
+                            <CommandItem
+                              key={city}
+                              value={city}
+                              onSelect={() => handleCityToggle(city)}
+                              className="flex items-center gap-2 cursor-pointer bg-white hover:bg-gray-50 p-3 border-b border-gray-100"
+                            >
+                              <div className="flex h-4 w-4 items-center justify-center">
+                                {formData.selectedCities.includes(city) && (
+                                  <Check className="h-4 w-4 text-blue-600" />
+                                )}
+                              </div>
+                              <span className="text-gray-700">{city}</span>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+
+                {/* Selected Cities */}
+                {formData.selectedCities.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {formData.selectedCities.map((city) => (
+                      <Badge key={city} variant="secondary" className="px-3 py-1">
+                        {city}
+                        <button
+                          type="button"
+                          onClick={() => removeCity(city)}
+                          className="ml-2 hover:bg-gray-200 rounded-full p-1"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Submit Button */}
