@@ -31,41 +31,43 @@ export const ResultsTableRow: React.FC<ResultsTableRowProps> = ({
         transition-colors duration-150
       `}
     >
-      <TableCell className={`${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'} font-medium`}>
+      <TableCell className={`${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'} font-medium`}>
         <div className="max-w-full">
-          <div className="font-medium text-foreground leading-tight">
+          <div className="font-semibold text-foreground leading-tight break-words">
             {college.collegeName}
           </div>
         </div>
       </TableCell>
       
-      <TableCell className={`${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'}`}>
-        {college.city}
+      <TableCell className={`${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'}`}>
+        <div className="font-medium text-foreground">
+          {college.city}
+        </div>
       </TableCell>
       
-      <TableCell className={`${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'}`}>
-        <Badge variant="outline" className={`${isMobile ? 'text-xs px-1 py-0' : 'text-xs'}`}>
+      <TableCell className={`${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'}`}>
+        <Badge variant="outline" className={`${isMobile ? 'text-xs px-2 py-1' : 'text-sm px-2 py-1'}`}>
           {college.collegeType}
         </Badge>
       </TableCell>
       
-      <TableCell className={`${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'}`}>
+      <TableCell className={`${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'}`}>
         <div className="max-w-full">
-          <span className="text-foreground leading-tight">
+          <span className="font-medium text-foreground leading-tight break-words">
             {college.branch}
           </span>
         </div>
       </TableCell>
 
-      <TableCell className={`${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'}`}>
-        <Badge variant="secondary" className={`${isMobile ? 'text-xs px-1 py-0' : 'text-xs'}`}>
+      <TableCell className={`${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'}`}>
+        <Badge variant="secondary" className={`${isMobile ? 'text-xs px-2 py-1' : 'text-sm px-2 py-1'}`}>
           {college.category}
         </Badge>
       </TableCell>
       
-      <TableCell className={`text-center ${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'}`}>
+      <TableCell className={`text-center ${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'}`}>
         {college.cap1Cutoff ? (
-          <span className={`font-medium ${
+          <span className={`font-semibold ${
             college.cap1Cutoff <= studentAggregate ? 'text-green-600' : 'text-gray-600'
           }`}>
             {college.cap1Cutoff}%
@@ -75,9 +77,9 @@ export const ResultsTableRow: React.FC<ResultsTableRowProps> = ({
         )}
       </TableCell>
       
-      <TableCell className={`text-center ${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'}`}>
+      <TableCell className={`text-center ${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'}`}>
         {college.cap2Cutoff ? (
-          <span className={`font-medium ${
+          <span className={`font-semibold ${
             college.cap2Cutoff <= studentAggregate ? 'text-green-600' : 'text-gray-600'
           }`}>
             {college.cap2Cutoff}%
@@ -87,9 +89,9 @@ export const ResultsTableRow: React.FC<ResultsTableRowProps> = ({
         )}
       </TableCell>
       
-      <TableCell className={`text-center ${isMobile ? 'p-1 text-xs' : 'p-2 text-sm'}`}>
+      <TableCell className={`text-center ${isMobile ? 'p-2 text-xs' : 'p-3 text-sm'}`}>
         {college.cap3Cutoff ? (
-          <span className={`font-medium ${
+          <span className={`font-semibold ${
             college.cap3Cutoff <= studentAggregate ? 'text-green-600' : 'text-gray-600'
           }`}>
             {college.cap3Cutoff}%
@@ -99,14 +101,14 @@ export const ResultsTableRow: React.FC<ResultsTableRowProps> = ({
         )}
       </TableCell>
       
-      <TableCell className={`text-center ${isMobile ? 'p-1' : 'p-2'}`}>
+      <TableCell className={`text-center ${isMobile ? 'p-2' : 'p-3'}`}>
         {college.eligible ? (
           <div className="flex items-center justify-center">
-            <Check className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} text-green-600`} />
+            <Check className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-green-600`} />
           </div>
         ) : (
           <div className="flex items-center justify-center">
-            <X className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} text-red-500`} />
+            <X className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-red-500`} />
           </div>
         )}
       </TableCell>

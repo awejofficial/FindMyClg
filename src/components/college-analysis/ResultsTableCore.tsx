@@ -44,19 +44,19 @@ export const ResultsTableCore: React.FC<ResultsTableCoreProps> = ({
     <div className="bg-white rounded-lg border overflow-hidden" data-results-table>
       {/* Mobile: Horizontal scroll container */}
       <div className="overflow-x-auto">
-        <div className={isMobile ? "min-w-[800px]" : ""}>
+        <div className={isMobile ? "min-w-[1000px]" : ""}>
           <Table>
-            <TableHeader className="bg-gray-50 sticky top-0">
+            <TableHeader className="bg-primary/5 sticky top-0">
               <TableRow>
-                <TableHead className={`font-medium ${isMobile ? 'min-w-[200px]' : ''} p-1 md:p-2`}>College</TableHead>
-                <TableHead className={`font-medium ${isMobile ? 'w-16' : 'w-24'} p-1 md:p-2`}>City</TableHead>
-                <TableHead className={`font-medium ${isMobile ? 'w-16' : 'w-20'} p-1 md:p-2`}>Type</TableHead>
-                <TableHead className={`font-medium ${isMobile ? 'min-w-[120px]' : ''} p-1 md:p-2`}>Branch</TableHead>
-                <TableHead className={`font-medium ${isMobile ? 'w-16' : 'w-20'} p-1 md:p-2`}>Category</TableHead>
-                <TableHead className={`text-center font-medium ${isMobile ? 'w-12' : 'w-16'} p-1 md:p-2`}>CAP1</TableHead>
-                <TableHead className={`text-center font-medium ${isMobile ? 'w-12' : 'w-16'} p-1 md:p-2`}>CAP2</TableHead>
-                <TableHead className={`text-center font-medium ${isMobile ? 'w-12' : 'w-16'} p-1 md:p-2`}>CAP3</TableHead>
-                <TableHead className={`text-center font-medium ${isMobile ? 'w-16' : 'w-20'} p-1 md:p-2`}>Status</TableHead>
+                <TableHead className={`font-semibold text-primary ${isMobile ? 'min-w-[250px]' : 'min-w-[200px]'} p-2 md:p-3`}>College Name</TableHead>
+                <TableHead className={`font-semibold text-primary ${isMobile ? 'w-20' : 'w-24'} p-2 md:p-3`}>City</TableHead>
+                <TableHead className={`font-semibold text-primary ${isMobile ? 'w-20' : 'w-24'} p-2 md:p-3`}>Type</TableHead>
+                <TableHead className={`font-semibold text-primary ${isMobile ? 'min-w-[150px]' : 'min-w-[120px]'} p-2 md:p-3`}>Branch</TableHead>
+                <TableHead className={`font-semibold text-primary ${isMobile ? 'w-20' : 'w-24'} p-2 md:p-3`}>Category</TableHead>
+                <TableHead className={`text-center font-semibold text-primary ${isMobile ? 'w-16' : 'w-20'} p-2 md:p-3`}>CAP1</TableHead>
+                <TableHead className={`text-center font-semibold text-primary ${isMobile ? 'w-16' : 'w-20'} p-2 md:p-3`}>CAP2</TableHead>
+                <TableHead className={`text-center font-semibold text-primary ${isMobile ? 'w-16' : 'w-20'} p-2 md:p-3`}>CAP3</TableHead>
+                <TableHead className={`text-center font-semibold text-primary ${isMobile ? 'w-20' : 'w-24'} p-2 md:p-3`}>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
