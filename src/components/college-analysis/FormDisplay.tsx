@@ -68,7 +68,12 @@ export const FormDisplay: React.FC<FormDisplayProps> = ({
             formData={formData}
             availableCategories={availableCategories}
             isAnalyzing={isAnalyzing}
+            isGuest={isGuest}
             onFormDataChange={onFormDataChange}
+            onBranchChange={onBranchChange}
+            onCollegeTypeChange={onCollegeTypeChange}
+            onCityChange={onCityChange}
+            onGuestAccess={onGuestAccess}
             onSubmit={onSubmit}
           />
         </div>
