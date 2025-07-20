@@ -148,7 +148,12 @@ const Index = () => {
         return;
       }
 
-      const collegeMatches = processCollegeMatches(allCutoffData, aggregate);
+      const collegeMatches = processCollegeMatches(
+        allCutoffData, 
+        aggregate, 
+        formData.preferredBranches, 
+        formData.selectedCities
+      );
       console.log('Processed matches:', collegeMatches.length);
       
       setResults(collegeMatches);

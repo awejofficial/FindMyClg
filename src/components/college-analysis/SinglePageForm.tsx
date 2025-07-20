@@ -15,6 +15,7 @@ import {
 } from "@/services/databaseService";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { DragSortableList } from "./DragSortableList";
 
 interface SinglePageFormProps {
   formData: FormData;
@@ -113,6 +114,10 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
     onBranchChange(branch, false);
   };
 
+  const handleBranchReorder = (newOrder: string[]) => {
+    onFormDataChange({ preferredBranches: newOrder });
+  };
+
   const removeCategory = (category: string) => {
     const currentCategories = Array.isArray(formData.category) ? formData.category : 
                              formData.category ? [formData.category] : [];
@@ -127,6 +132,10 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
   const removeCity = (city: string) => {
     const updatedCities = formData.selectedCities.filter(c => c !== city);
     onCityChange(updatedCities);
+  };
+
+  const handleCityReorder = (newOrder: string[]) => {
+    onCityChange(newOrder);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -273,7 +282,7 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
               {/* Branch Selection */}
               <div>
                 <Label className="text-base font-medium text-gray-700 mb-3 block">
-                  Preferred Branches *
+                  Preferred Branches * (Drag to reorder by priority)
                 </Label>
                 <Popover open={isBranchPopoverOpen} onOpenChange={setIsBranchPopoverOpen}>
                   <PopoverTrigger asChild>
@@ -315,23 +324,15 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
                   </PopoverContent>
                 </Popover>
 
-                {/* Selected Branches */}
-                {formData.preferredBranches.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {formData.preferredBranches.map((branch) => (
-                      <Badge key={branch} variant="secondary" className="px-3 py-1">
-                        {branch}
-                        <button
-                          type="button"
-                          onClick={() => removeBranch(branch)}
-                          className="ml-2 hover:bg-gray-200 rounded-full p-1"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                {/* Selected Branches with Drag Sort */}
+                <div className="mt-3">
+                  <DragSortableList
+                    items={formData.preferredBranches}
+                    onReorder={handleBranchReorder}
+                    onRemove={removeBranch}
+                    placeholder="No branches selected. Choose branches above to set priority."
+                  />
+                </div>
               </div>
 
               {/* College Type Selection */}
@@ -401,7 +402,7 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
               {/* City Selection */}
               <div>
                 <Label className="text-base font-medium text-gray-700 mb-3 block">
-                  Preferred Cities
+                  Preferred Cities (Drag to reorder by priority)
                 </Label>
                 <Popover open={isCityPopoverOpen} onOpenChange={setIsCityPopoverOpen}>
                   <PopoverTrigger asChild>
@@ -443,23 +444,15 @@ export const SinglePageForm: React.FC<SinglePageFormProps> = ({
                   </PopoverContent>
                 </Popover>
 
-                {/* Selected Cities */}
-                {formData.selectedCities.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {formData.selectedCities.map((city) => (
-                      <Badge key={city} variant="secondary" className="px-3 py-1">
-                        {city}
-                        <button
-                          type="button"
-                          onClick={() => removeCity(city)}
-                          className="ml-2 hover:bg-gray-200 rounded-full p-1"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                {/* Selected Cities with Drag Sort */}
+                <div className="mt-3">
+                  <DragSortableList
+                    items={formData.selectedCities}
+                    onReorder={handleCityReorder}
+                    onRemove={removeCity}
+                    placeholder="No cities selected. Choose cities above to set priority."
+                  />
+                </div>
               </div>
 
               {/* Submit Button */}

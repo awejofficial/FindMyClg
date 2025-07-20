@@ -2,7 +2,12 @@
 import { CutoffRecord } from "@/services/databaseService";
 import { CollegeMatch } from "./FormDataTypes";
 
-export const processCollegeMatches = (cutoffData: CutoffRecord[], studentAggregate: number): CollegeMatch[] => {
+export const processCollegeMatches = (
+  cutoffData: CutoffRecord[], 
+  studentAggregate: number, 
+  preferredBranches: string[] = [], 
+  selectedCities: string[] = []
+): CollegeMatch[] => {
   // Group by unique combination of college_name, branch_name, category
   const uniqueCombinations = new Map<string, CutoffRecord>();
   
@@ -34,12 +39,37 @@ export const processCollegeMatches = (cutoffData: CutoffRecord[], studentAggrega
     };
   });
 
-  // Sort by eligible first, then by lowest cutoff available
+  // Sort by priority: eligible first, then branch priority, then city priority, then cutoff
   return matches.sort((a, b) => {
+    // First priority: eligibility
     if (a.eligible && !b.eligible) return -1;
     if (!a.eligible && b.eligible) return 1;
     
-    // Get lowest cutoff for sorting
+    // Second priority: branch preference order
+    const aBranchIndex = preferredBranches.indexOf(a.branch);
+    const bBranchIndex = preferredBranches.indexOf(b.branch);
+    
+    if (aBranchIndex !== -1 && bBranchIndex !== -1) {
+      if (aBranchIndex !== bBranchIndex) return aBranchIndex - bBranchIndex;
+    } else if (aBranchIndex !== -1) {
+      return -1; // a has preferred branch, b doesn't
+    } else if (bBranchIndex !== -1) {
+      return 1; // b has preferred branch, a doesn't
+    }
+    
+    // Third priority: city preference order
+    const aCityIndex = selectedCities.indexOf(a.city);
+    const bCityIndex = selectedCities.indexOf(b.city);
+    
+    if (aCityIndex !== -1 && bCityIndex !== -1) {
+      if (aCityIndex !== bCityIndex) return aCityIndex - bCityIndex;
+    } else if (aCityIndex !== -1) {
+      return -1; // a has preferred city, b doesn't
+    } else if (bCityIndex !== -1) {
+      return 1; // b has preferred city, a doesn't
+    }
+    
+    // Final priority: lowest cutoff available
     const getLowestCutoff = (college: CollegeMatch) => {
       const cutoffs = [college.cap1Cutoff, college.cap2Cutoff, college.cap3Cutoff]
         .filter(c => c !== null) as number[];
