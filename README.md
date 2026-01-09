@@ -1,73 +1,116 @@
-# Welcome to your Lovable project
+🏫 FindMyClg
 
-## Project info
+FindMyClg is a web app that helps students search and explore colleges easily. It shows college details, filters by location/stream, and links to apply or view more information — hosted live at https://findmyclg.vercel.app
+.
 
-**URL**: https://lovable.dev/projects/a2237ae6-4b08-4a67-9f27-9c52398affac
+🔥 Live Demo: https://findmyclg.vercel.app
 
-## How can I edit this code?
+📁 Repo: https://github.com/awejofficial/FindMyClg
 
-There are several ways of editing your application.
+📌 About
 
-**Use Lovable**
+FindMyClg is a modern, responsive application built for students looking for information about colleges. It provides a searchable, user-friendly UI to quickly find and compare college options.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a2237ae6-4b08-4a67-9f27-9c52398affac) and start prompting.
+🚀 Features
 
-Changes made via Lovable will be committed automatically to this repo.
+✔ Search colleges by name, city, or stream
+✔ Display college details (name, location, courses, website)
+✔ Simple and clean UI
+✔ Hosted online with instant access
+✔ Built with modern web technologies
 
-**Use your preferred IDE**
+🧠 Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The project uses the following stack:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Technology	Purpose
+React / Vite	Frontend framework & build tool
+TypeScript	Strong typing JavaScript
+Tailwind CSS	Styling and layout
+Supabase	Backend/database (if used in your project)
+Vercel	Deployment platform
 
-Follow these steps:
+(Adjust if your backend or database differs)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+🛠 Installation (Run Locally)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Clone the repo
 
-# Step 3: Install the necessary dependencies.
-npm i
+git clone https://github.com/awejofficial/FindMyClg.git
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+
+Install dependencies
+
+cd FindMyClg
+npm install
+
+
+Start the development server
+
 npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Open your browser at:
 
-**Use GitHub Codespaces**
+http://localhost:5173
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+⚙️ Configuration
 
-## What technologies are used for this project?
+If your project uses environment variables (e.g., Supabase):
 
-This project is built with:
+Create a .env file
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Add the needed keys:
 
-## How can I deploy this project?
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-Simply open [Lovable](https://lovable.dev/projects/a2237ae6-4b08-4a67-9f27-9c52398affac) and click on Share -> Publish.
 
-## Can I connect a custom domain to my Lovable project?
+(Update based on how your app config works)
 
-Yes, you can!
+📸 Screenshots
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+(Optional: Add screenshots or animated GIFs here to show UI)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+(Replace with real image links)
+
+📦 Deployment
+
+This project is deployed using Vercel:
+
+Branch → Production: main
+
+Live site: https://findmyclg.vercel.app
+
+If you want to redeploy:
+
+Connect your GitHub repo to Vercel
+
+Set environment variables in Vercel dashboard
+
+Trigger a deploy
+
+🤝 Contributing
+
+Contributions are welcome! 🙌
+
+Fork this repository
+
+Create a new branch
+
+git checkout -b feature/YourFeature
+
+
+Make your changes
+
+Push & open a Pull Request
+
+📝 License
+
+This project is open-source — add a license if you want (e.g., MIT).
+
+🧑‍💻 About the Author
+
+Awej – Student, Developer
+GitHub: @awejofficial
