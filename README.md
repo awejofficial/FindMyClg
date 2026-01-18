@@ -1,102 +1,97 @@
-```markdown
-# 🏫 FindMyClg
+# FindMyClg - DSE College Finder
 
-[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen)](https://findmyclg.vercel.app)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/awejofficial/findmyclg)
 
-**FindMyClg** is a modern web application that empowers students to search and explore colleges with ease. Discover institutions by location and stream, view detailed information, and access direct application links—all in a slick, user-friendly interface.
+FindMyClg is a web application built to simplify the college search process for Direct Second Year (DSE) B.Tech engineering students in Maharashtra. It provides a personalized, data-driven approach to discover eligible colleges based on diploma aggregate marks, category, and preferences, using official CAP round cutoff data.
 
-👉 **Live Demo:** [findmyclg.vercel.app](https://findmyclg.vercel.app)
+**Live Demo: [https://findmyclg.vercel.app](https://findmyclg.vercel.app)**
 
----
+## ✨ Key Features
 
-## 🚀 Introduction
+-   **Personalized College Matching**: Enter your diploma aggregate, category, and branch preferences to instantly receive a list of matching colleges.
+-   **DSE-Focused**: Exclusively designed for diploma students seeking lateral entry into B.Tech programs in Maharashtra.
+-   **Official Cutoff Data**: Utilizes verified government-published CAP cutoff data from Rounds I, II, and III for accurate eligibility checks.
+-   **Smart Strategy Report**: Go beyond simple matching with a categorized report of your "Best Fit," "Safe," and "Dream" college options.
+-   **Advanced Filtering & Sorting**: Easily filter results by city, branch, college type (Government, Private, etc.), and sort by eligibility, cutoff, or name.
+-   **PDF Export**: Download your personalized college analysis report as a professionally formatted PDF to review and share.
+-   **Intuitive UI**: A clean, modern, and responsive interface built with Tailwind CSS and shadcn/ui.
 
-Choosing the right college is a crucial step in every student's journey. FindMyClg simplifies this process by offering an intuitive platform to:
+## 🛠️ Tech Stack
 
-- Search colleges by name, location, and stream.
-- View comprehensive details and eligibility criteria.
-- Filter, sort, and compare colleges.
-- Get direct links to apply or learn more.
+| Category      | Technology                                                                                                  |
+| :------------ | :---------------------------------------------------------------------------------------------------------- |
+| **Frontend**  | [React](https://reactjs.org/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)     |
+| **Styling**   | [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/)                                |
+| **Backend**   | [Supabase](https://supabase.io/) (PostgreSQL Database, Auth, Edge Functions)                                |
+| **Deployment**| [Vercel](https://vercel.com/)                                                                               |
 
----
+## 🚀 Getting Started
 
-## ✨ Features
+To run the project locally, follow these steps:
 
-- **Lightning-fast Search:** Find colleges instantly by name, stream, or location.
-- **Smart Filters & Sorting:** Narrow your options by city, course, or other criteria.
-- **Detailed College Profiles:** Access key information—courses offered, fees, facilities, contact info, and more.
-- **Direct Application Links:** Go straight to the college's official site to apply.
-- **Modern UI:** Responsive, accessible, and built with [React](https://react.dev), [Vite](https://vitejs.dev), [Tailwind CSS](https://tailwindcss.com), and [shadcn/ui](https://ui.shadcn.com).
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/awejofficial/findmyclg.git
+    ```
 
----
+2.  **Navigate to the project directory:**
+    ```bash
+    cd findmyclg
+    ```
 
-## 🛠️ Installation
+3.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-> **Prerequisites:**  
-> - Node.js ≥ 18  
-> - npm ≥ 9
+4.  **Set up environment variables:**
+    Create a `.env.local` file in the root of the project and add your Supabase project credentials. You can find these in your Supabase project settings.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/FindMyClg.git
-   cd FindMyClg
-   ```
+    ```env
+    VITE_SUPABASE_URL=your_supabase_url
+    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+5.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
 
-3. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+    The application will be available at `http://localhost:8080`.
 
-4. **Visit**
-   ```
-   http://localhost:5173
-   ```
+## 📂 Project Structure
 
----
+The repository is organized to separate concerns and facilitate maintainability:
 
-## 📖 Usage
-
-- **Search & Filter:** Use the search bar and filter controls to find colleges that match your preferences.
-- **Explore Details:** Click on any college to see its profile, eligibility, and application links.
-- **Apply:** Use the external links to apply directly to the college website.
-
-> The app is also available online:  
-> [findmyclg.vercel.app](https://findmyclg.vercel.app)
-
----
+```
+/src
+├── components/
+│   ├── college-analysis/ # Core components for the analysis feature
+│   ├── form-steps/       # Multi-step form components
+│   └── ui/               # Reusable shadcn/ui components
+├── contexts/             # React context providers
+├── hooks/                # Custom React hooks
+├── integrations/         # Supabase client and generated types
+├── pages/                # Top-level page components for routing
+├── services/             # Functions for database interaction
+└── supabase/             # Supabase CLI configuration
+    ├── functions/        # Edge functions (e.g., send-feedback)
+    └── migrations/       # Database schema migrations
+```
 
 ## 🤝 Contributing
 
-Contributions are welcome! 🚀
+Contributions are welcome! If you have suggestions for improvements or want to fix a bug, please follow these steps:
 
-1. Fork this repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1.  Fork the repository.
+2.  Create a new branch for your feature (`git checkout -b feature/YourFeatureName`).
+3.  Make your changes and commit them (`git commit -m 'Add some feature'`).
+4.  Push to the branch (`git push origin feature/YourFeatureName`).
+5.  Open a Pull Request.
 
-Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+## 🧑‍💻 About the Author
 
----
+This project was created by **Awej Pathan**, a student and developer passionate about building practical solutions for students.
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-> **Made with ❤️ for students everywhere!**
-```
-
-
-## License
-This project is licensed under the **MIT** License.
-
----
-🔗 GitHub Repo: https://github.com/awejofficial/FindMyClg
+-   **GitHub**: [@awejofficial](https://github.com/awejofficial)
+-   **LinkedIn**: [in/awejpathan](https://www.linkedin.com/in/awejpathan/)
